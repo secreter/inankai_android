@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:drawable="@drawable/loading_icon"
+        android:duration="120"/>
+    <item
+        android:drawable="@drawable/pageload_icon1"
+        android:duration="120"/>
+    <item
+        android:drawable="@drawable/pageload_icon2"
+        android:duration="120"/>
+
+</animation-list>

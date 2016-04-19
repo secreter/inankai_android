@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="cn.redream.www.redream" >
+
+    <uses-permission android:name="android.permission.INTERNET" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" >
+    </uses-permission>
+
+    <application
+        android:name=".RedreamApp"
+        android:allowBackup="true"
+        android:icon="@mipmap/redream"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MusicActivity"
+            android:label="@string/title_activity_music"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity android:name=".MusicTabActivity" >
+        </activity>
+        <activity android:name=".MusicResultActivity" >
+        </activity>
+        <activity
+            android:name=".CctvActivity"
+            android:label="@string/title_activity_cctv"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".TreeholeActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".TestpaperActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity android:name=".CartoonActivity" >
+        </activity>
+        <activity android:name=".CartoonDescActivity" >
+        </activity>
+        <activity
+            android:name=".TvplaerActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".MovieActivity"
+            android:label="@string/title_activity_movie"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".MovieDescActivity"
+            android:label="@string/title_activity_movie" >
+        </activity>
+        <activity android:name=".LocalMovieActivity" >
+        </activity>
+        <activity android:name=".AboutActivity" >
+        </activity>
+    </application>
+
+</manifest>

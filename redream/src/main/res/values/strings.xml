@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Redream</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="action_share_pyq">分享到朋友圈</string>
+    <string name="action_share_friend">发送给微信好友</string>
+    <string name="title_activity_music">桃源音乐</string>
+    <string name="title_activity_localtv">地方卫视</string>
+    <string name="title_activity_cctv">中央卫视</string>
+    <string name="title_activity_movie">光影传奇</string>
+</resources>

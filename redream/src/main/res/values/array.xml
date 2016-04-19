@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="search_type">
+        <item>片名</item>
+        <item>导演</item>
+        <item>主演</item>
+    </string-array>
+</resources>   

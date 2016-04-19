@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorBlank">#FFFFFF</color>
+    <color name="colorGray">#eeeeee</color>
+    <color name="eggplant">#6b6575</color>
+    <color name="lvory">#e0d3bf</color>
+    <color name="shenhui">#544a54</color>
+    <color name="shenhuiTab">#716a71</color>
+    <color name="cihui">#8f8375</color>
+    <color name="huibai">#f7f7f7</color>
+    <color name="huilan">#8ea2ad</color>
+    <color name="fenlan">#ccccff</color>
+    <color name="danhuan">#fdf1b5</color>
+    <color name="zonghong">#4d111d</color>
+    <color name="qianlan">#78a7c4</color>
+    <color name="qinghuan">#f6ffe3</color>
+
+</resources>
