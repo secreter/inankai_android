@@ -207,6 +207,14 @@ public class GuideActivity extends Activity {
                     imageViews[i].setBackgroundResource(R.drawable.page_indicator);
                 }
             }
+            if(position == 2)
+            {
+                guideSkip.setBackgroundResource(R.drawable.begin_trying_selector);
+            }
+            else
+            {
+                guideSkip.setBackgroundResource(R.drawable.guide_skip_selector);
+            }
 
         }
     }

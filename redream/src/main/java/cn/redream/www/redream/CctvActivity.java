@@ -45,6 +45,8 @@ public class CctvActivity extends AppCompatActivity
     private ArrayAdapter adapterType;
     private String movieType;
     private String searchTypeStr="name";  //默认搜索片名
+    private MenuItem thisActMenuItem;
+    private NavigationView navigationView;
     Context context=this;
     WXShareUtil share;
     @Override
@@ -62,10 +64,19 @@ public class CctvActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        this.navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         init();
+    }
+
+    //用于菜单的同步
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //起始化进入该页面时设置其本身被选中
+        thisActMenuItem= navigationView.getMenu().getItem(1);
+        thisActMenuItem.setChecked(true); // 改变item选中状态
     }
     private void init(){
         gridView = (GridView) findViewById(R.id.gridviewLocal);

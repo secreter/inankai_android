@@ -53,6 +53,8 @@ public class MovieActivity extends AppCompatActivity
     private String searchType="name";  //默认搜索片名
     private String searchString;
     private List<Map<String,Object>> movieListData=new ArrayList<Map<String,Object>>();
+    private MenuItem thisActMenuItem;
+    private NavigationView navigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +69,7 @@ public class MovieActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        this.navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
 
@@ -75,6 +77,12 @@ public class MovieActivity extends AppCompatActivity
         init();
     }
 
+    protected void onResume() {
+        super.onResume();
+        //起始化进入该页面时设置其本身被选中
+        thisActMenuItem= navigationView.getMenu().getItem(2);
+        thisActMenuItem.setChecked(true); // 改变item选中状态
+    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

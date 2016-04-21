@@ -2,10 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <group android:checkableBehavior="single">
-        <item android:id="@+id/local_tv" android:icon="@mipmap/tv"
-            android:title="ipv6地方卫视" />
-        <item android:id="@+id/cc_tv" android:icon="@mipmap/tv"
-            android:title="ipv6中央卫视" />
+        <item android:id="@+id/local_tv" android:icon="@drawable/tv_selector"
+            android:title="卫视直播" />
+        <item android:id="@+id/cc_tv" android:icon="@drawable/cctv_selector"
+            android:title="央视直播" />
         <item android:id="@+id/movie" android:icon="@mipmap/movie"
             android:title="光影电影" />
         <item android:id="@+id/cartoon" android:icon="@mipmap/cartoon"

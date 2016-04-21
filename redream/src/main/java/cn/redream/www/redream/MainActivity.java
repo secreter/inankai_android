@@ -54,6 +54,8 @@ public class MainActivity extends AppCompatActivity
     private ArrayAdapter adapterType;
     private String movieType;
     private String searchTypeStr="name";  //默认搜索片名
+    private MenuItem thisActMenuItem;//
+    private NavigationView navigationView;
     Context context=this;
     WXShareUtil share;
     @Override
@@ -65,14 +67,17 @@ public class MainActivity extends AppCompatActivity
 
 
 
+
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        this.navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
 
         //my
         init();
@@ -83,6 +88,14 @@ public class MainActivity extends AppCompatActivity
 //        intent.setType("video/*");
 //        intent.setDataAndType(uri, "video/*");
 //        startActivity(intent);
+    }
+//用于菜单的同步
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //起始化进入该页面时设置其本身被选中
+        thisActMenuItem= navigationView.getMenu().getItem(0);
+        thisActMenuItem.setChecked(true); // 改变item选中状态
     }
     private void init(){
         gridView = (GridView) findViewById(R.id.gridviewLocal);
@@ -192,9 +205,13 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
+
     /**
      * 菜单、返回键响应
      */
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         // TODO Auto-generated method stub

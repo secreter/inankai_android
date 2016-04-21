@@ -21,9 +21,9 @@
             android:layout_centerHorizontal="true" >
         <Button
             android:id="@+id/bt_guide_skip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/guide_skip"
+            android:layout_width="330dp"
+            android:layout_height="60dp"
+            android:background="@drawable/guide_skip_selector"
             android:layout_marginBottom="33dp"
             android:layout_gravity="top" />
         </RelativeLayout>
