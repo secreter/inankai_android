@@ -7,11 +7,14 @@
         <item name="colorPrimaryDark">@color/shenhui</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="publicloadingProgressStyle">
@@ -20,8 +23,9 @@
         <item name="android:minWidth">150dip</item>
         <item name="android:minHeight">220dip</item>
     </style>
+
     <style name="myStateBarTheme" parent="Theme.AppCompat.NoActionBar">
-        <item name="android:windowTranslucentNavigation" >true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
         <item name="android:windowTranslucentStatus">true</item>
         <!-- toolbar（actionbar）颜色 -->
         <item name="colorPrimary">#673AB7</item>

@@ -9,6 +9,8 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:background="@color/huibai">
+
+
         <TabWidget
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -30,6 +32,8 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/searchArtist"
                     android:imeOptions="actionSearch"
+                    android:layout_gravity="center_horizontal"
+                    android:background="#FFFFFF"
                     android:queryHint="歌手"
                     />
                 <ScrollView

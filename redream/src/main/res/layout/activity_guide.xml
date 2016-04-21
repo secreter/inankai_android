@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/guidePages"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"/>
+        <RelativeLayout
+            android:id="@+id/gap_guide_skip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true" >
+        <Button
+            android:id="@+id/bt_guide_skip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/guide_skip"
+            android:layout_marginBottom="33dp"
+            android:layout_gravity="top" />
+        </RelativeLayout>
+            <LinearLayout
+                android:id="@+id/viewGroup"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                android:layout_above="@id/gap_guide_skip"
+                android:layout_marginBottom="71dp">
+            </LinearLayout>
+    </RelativeLayout>
+</FrameLayout>

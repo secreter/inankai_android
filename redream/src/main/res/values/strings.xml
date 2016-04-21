@@ -11,4 +11,5 @@
     <string name="title_activity_localtv">地方卫视</string>
     <string name="title_activity_cctv">中央卫视</string>
     <string name="title_activity_movie">光影传奇</string>
+    <string name="title_activity_guide">GuideActivity</string>
 </resources>
