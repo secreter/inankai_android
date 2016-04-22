@@ -1,9 +1,13 @@
 package cn.redream.www.redream;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -11,12 +15,20 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
@@ -24,6 +36,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
@@ -47,7 +60,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class MusicTabActivity extends TabActivity implements TabHost.OnTabChangeListener {
+public class MusicTabActivity extends AppCompatActivity implements TabHost.OnTabChangeListener,NavigationView.OnNavigationItemSelectedListener {
     TabHost tabHost;
     String response;
     Context context;
@@ -83,12 +96,18 @@ public class MusicTabActivity extends TabActivity implements TabHost.OnTabChange
 //    int nextPlayViewPos;
     MusicPlayAdapter musicPlayAdapter;
     RedreamApp redreamApp;
+    private Spinner searchType;
+    private android.support.v7.widget.SearchView movieSearch;
+    private String searchTypeStr="name";  //默认搜索片名
+    private ArrayAdapter adapterType;
+    private MenuItem thisActMenuItem;//
+    private NavigationView navigationView;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_ACTION_BAR);// 去掉标题栏
         setContentView(R.layout.activity_music_tab);
 
         //设置状态栏
@@ -96,6 +115,35 @@ public class MusicTabActivity extends TabActivity implements TabHost.OnTabChange
 
         init();
 
+        //设置放大镜的图标为黑色
+        int search_mag_icon_id1 = searchArtist.getContext().getResources().getIdentifier("android:id/search_mag_icon", null, null);
+        ImageView  search_mag_icon1 = (ImageView)searchArtist.findViewById(search_mag_icon_id1);//获取搜索图标
+//        ImageView search_button = (ImageView) searchCartoon.findViewById(android.R.id.search_button);
+        search_mag_icon1.setImageResource(R.mipmap.search3);//图标都是用src的
+        //将其展开后改变图标才有用
+        searchArtist.setIconifiedByDefault(false);
+
+        //设置字体为黑色
+        int id1 = searchArtist.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+        TextView textView1 = (TextView) searchArtist.findViewById(id1);
+        textView1.setTextColor(Color.BLACK);
+        textView1.setTextSize(14);
+        textView1.setHintTextColor(getResources().getColor(R.color.grey));
+
+        int search_mag_icon_id2 = searchTitle.getContext().getResources().getIdentifier("android:id/search_mag_icon", null, null);
+        ImageView  search_mag_icon2 = (ImageView)searchTitle.findViewById(search_mag_icon_id2);//获取搜索图标
+//        ImageView search_button = (ImageView) searchCartoon.findViewById(android.R.id.search_button);
+        search_mag_icon2.setImageResource(R.mipmap.search3);//图标都是用src的
+
+        //将其展开后改变图标才有用
+        searchTitle.setIconifiedByDefault(false);
+
+        //设置字体为黑色
+        int id2 = searchTitle.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+        TextView textView2 = (TextView) searchTitle.findViewById(id2);
+        textView2.setTextColor(Color.BLACK);
+        textView2.setTextSize(14);
+        textView2.setHintTextColor(getResources().getColor(R.color.grey));
 
         searchArtist.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -322,25 +370,22 @@ public class MusicTabActivity extends TabActivity implements TabHost.OnTabChange
 //    }
 
 
+
     private void updateTab(final TabHost tabHost) {
         for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {
             View view = tabHost.getTabWidget().getChildAt(i);
             TextView tv = (TextView) tabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title);
-            tv.setTextSize(18);
+            tv.setTextSize(15);
             tv.setTextColor(getResources().getColor(R.color.colorBlank));
 //            tv.setTypeface(Typeface.SERIF, 2); // 设置字体和风格
             if (tabHost.getCurrentTab() == i) {//选中
-                view.setBackgroundColor(getResources().getColor(R.color.shenhuiTab));
+                view.setBackgroundResource(R.drawable.tab_focused);
+
                 tv.setTextColor(getResources().getColor(R.color.colorBlank));
-//                view.setBackgroundDrawable(getResources().getDrawable(R.drawable.stroke_border));//选中后的背景
-//                tv.setTextColor(this.getResources().getColorStateList(
-//                        android.R.color.black));
             } else {//不选中
-                view.setBackgroundColor(getResources().getColor(R.color.cihui));
+                view.setBackgroundResource(R.drawable.tab_normal);
+
                 tv.setTextColor(getResources().getColor(R.color.colorGray));
-//                view.setBackgroundDrawable(getResources().getDrawable(R.drawable.category_bg));//非选择的背景
-//                tv.setTextColor(this.getResources().getColorStateList(
-//                        android.R.color.white));
             }
 
         }
@@ -360,7 +405,9 @@ public class MusicTabActivity extends TabActivity implements TabHost.OnTabChange
         updateTab(tabHost);
     }
     private void initTabHost(){
-        tabHost=getTabHost();
+        tabHost = (TabHost) findViewById(android.R.id.tabhost);
+        //不能少setup()哟~~~
+        tabHost.setup();
         TabHost.TabSpec tab1=tabHost.newTabSpec("tab1")
                 .setIndicator("歌手") //创建标题
                 .setContent(R.id.tab1);//创建内容
@@ -382,8 +429,8 @@ public class MusicTabActivity extends TabActivity implements TabHost.OnTabChange
 
         final TabWidget tabWidget = tabHost.getTabWidget();
 
-        /************加白钱**********************/
-        tabWidget.setStripEnabled(true);
+//注销系统自带下划线！！！
+        tabWidget.setStripEnabled(false);
     }
     private void initArtist(){
         //创建一个List集合，list集合的元素是Map
@@ -449,6 +496,18 @@ public class MusicTabActivity extends TabActivity implements TabHost.OnTabChange
         searchTitle= (SearchView) findViewById(R.id.searchTitle);
         share=new WXShareUtil(this);
         redreamApp = ((RedreamApp)getApplicationContext());   //要在initLocal();后
+
+        this.navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        //注册导航栏
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
 
         initTabHost();
         initArtist();
@@ -706,6 +765,12 @@ public class MusicTabActivity extends TabActivity implements TabHost.OnTabChange
     @Override
     protected void onResume() {
         super.onResume();
+
+        //用于菜单的同步
+        //起始化进入该页面时设置其本身被选中
+        thisActMenuItem= navigationView.getMenu().getItem(4);
+        thisActMenuItem.setChecked(true); // 改变item选中状态
+
         Log.i(TAG, "onResume called.");
     }
 
@@ -764,5 +829,160 @@ public class MusicTabActivity extends TabActivity implements TabHost.OnTabChange
     }
     private static final String TAG = "MusicTabActivity";
     private int param = 1;
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        String title = "redream";
+        String desc = "ipv6电视、光影传奇、十二社区、桃源音乐，在南开用Redream就够了，不走流量哦~";
+        String url = "http://www.redream.cn/main/ipv6tv.php";
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.redream);
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_share_pyq) {
+            share.sendUrl(url, true, title, desc, bitmap);
+            return true;
+        }
+        if (id == R.id.action_share_friend) {
+            share.sendUrl(url, false, title, desc, bitmap);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+        Intent intent;
+        if (id == R.id.local_tv) {
+            intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+
+        } else if (id == R.id.cc_tv) {
+            intent = new Intent(this, CctvActivity.class);
+            startActivity(intent);
+
+        } else if (id == R.id.movie) {
+            movieTpye();
+        } else if (id == R.id.cartoon) {
+            intent = new Intent(this, CartoonActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.music) {
+
+        } else if (id == R.id.testpaper) {
+            intent = new Intent(this, TestpaperActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.treehole) {
+            intent = new Intent(this, TreeholeActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_share) {
+            String title = "ipv6电视、光影传奇、十二社区、桃源音乐，在南开用Redream就够了，不走流量哦~";
+            String desc = "一款南开必备神器，墙裂推荐！";
+            String url = "http://www.redream.cn/main/ipv6tv.php";
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.redream);
+            share.sendUrl(url, true, title, desc, bitmap);
+        } else if (id == R.id.nav_send) {
+            intent = new Intent(this, AboutActivity.class);
+            startActivity(intent);
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+    public void movieTpye(){
+        LinearLayout typeLayout= (LinearLayout) getLayoutInflater()
+                .inflate(R.layout.movie_type,null);
+        new AlertDialog.Builder(this)
+                .setIcon(R.mipmap.redream)
+                .setTitle("电影类型")
+                .setView(typeLayout)
+                .create()
+                .show();
+        searchType = (Spinner) typeLayout.findViewById(R.id.movieSpinner);
+        movieSearch= (android.support.v7.widget.SearchView) typeLayout.findViewById(R.id.movieSearch);
+
+        //将可选内容与ArrayAdapter连接起来
+        adapterType = ArrayAdapter.createFromResource(this, R.array.search_type, android.R.layout.simple_spinner_item);
+
+        //设置下拉列表的风格
+        adapterType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        //将adapter2 添加到spinner中
+        searchType.setAdapter(adapterType);
+
+        //添加事件Spinner事件监听
+        searchType.setOnItemSelectedListener(new SpinnerXMLSelectedListener());
+
+        //设置默认值
+        searchType.setVisibility(View.VISIBLE);
+
+        movieSearch.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Intent intent = new Intent(context, MovieActivity.class);
+                intent.putExtra("searchtype", searchTypeStr);
+                try {
+                    intent.putExtra("searchstring", URLEncoder.encode(query, "gbk"));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                startActivity(intent);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+    }
+    //使用XML形式操作
+    class SpinnerXMLSelectedListener implements AdapterView.OnItemSelectedListener {
+        public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
+                                   long arg3) {
+//            searchTypeStr= (String) adapterType.getItem(arg2);
+            switch (arg2){
+                case 0:
+                    searchTypeStr="name";
+                    break;
+                case 1:
+                    searchTypeStr="director";
+                    break;
+                case 2:
+                    searchTypeStr="actor";
+                    break;
+            }
+//            if(searchTypeStr=="片名")searchTypeStr="name";
+//            if(searchTypeStr=="导演")searchTypeStr="director";
+//            if(searchTypeStr=="主演")searchTypeStr="actor";
+        }
+
+        public void onNothingSelected(AdapterView<?> arg0) {
+
+        }
+
+    }
 }

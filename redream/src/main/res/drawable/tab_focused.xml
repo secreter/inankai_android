@@ -1,0 +1,13 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+        <!-- This is the line -->
+        <item >
+            <shape>
+            <solid android:color="@color/yellowBottomLine" />
+        </shape>
+        </item>
+        <item android:bottom="8dp">
+            <shape>
+            <solid android:color="@color/colorPrimary"/>
+            </shape>
+        </item>
+    </layer-list>

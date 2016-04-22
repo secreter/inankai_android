@@ -1,99 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@android:id/tabhost"
-    android:layout_weight="1">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/huibai">
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" android:id="@+id/drawer_layout"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:fitsSystemWindows="true" tools:openDrawer="start"
+    android:background="@color/huibai">
+
+    <include layout="@layout/app_bar_music" android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <android.support.design.widget.NavigationView android:id="@+id/nav_view"
+        android:layout_width="wrap_content" android:layout_height="match_parent"
+        android:layout_gravity="start" android:fitsSystemWindows="true"
+        app:headerLayout="@layout/nav_header_main" app:menu="@menu/activity_main_drawer"
+        android:background="@color/huibai"/>
 
 
-        <TabWidget
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@android:id/tabs"></TabWidget>
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@android:id/tabcontent">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:id="@+id/tab1">
-
-
-                <SearchView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/searchArtist"
-                    android:imeOptions="actionSearch"
-                    android:layout_gravity="center_horizontal"
-                    android:background="#FFFFFF"
-                    android:queryHint="歌手"
-                    />
-                <ScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:fillViewport="true">
-                    <ListView
-                        android:id="@+id/artistList"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"></ListView>
-                </ScrollView>
-
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/tab2"
-                android:orientation="vertical">
-                <SearchView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/searchTitle"
-                    android:imeOptions="actionSearch"
-                    android:queryHint="歌曲"
-                    />
-                <ScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:fillViewport="true"
-                    android:id="@+id/titleScrollView">
-                    <ListView
-                        android:id="@+id/titleList"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"></ListView>
-                </ScrollView>
-
-
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/tab3"
-                android:orientation="vertical">
-
-                <ScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:fillViewport="true"
-                    android:id="@+id/localScrollView">
-                    <ListView
-                        android:paddingTop="10dp"
-                        android:id="@+id/albumList"
-
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"></ListView>
-                </ScrollView>
-
-
-
-            </LinearLayout>
-        </FrameLayout>
-    </LinearLayout>
-</TabHost>
+</android.support.v4.widget.DrawerLayout>

@@ -104,14 +104,14 @@ public class MovieDescActivity extends AppCompatActivity {
                     movieDescView.setText(infoMap.get("movieDesc").replace("<br>",""));
                     //判断集数
                     if (buttonListData.size()>1){
-//                        SimpleAdapter simpleAdapter=new SimpleAdapter(context,buttonListData,R.layout.listview_download_movie,new String[]{"download","play"},new int[]{R.id.movieDownload,R.id.moviePlay});
+//                        SimpleAdapter simpleAdapter=new SimpleAdapter(context,buttonListData,R.tab_focused.listview_download_movie,new String[]{"download","play"},new int[]{R.id.movieDownload,R.id.moviePlay});
 //                        buttonListView.setAdapter(simpleAdapter);
                         MovieDownloadListViewAdapter adapter=new MovieDownloadListViewAdapter(context,buttonListData);
                         buttonListView.setAdapter(adapter);
                     }else{
                         buttonListData.get(0).put("download","下载");
                         buttonListData.get(0).put("play","播放");
-//                        SimpleAdapter simpleAdapter=new SimpleAdapter(context,buttonListData,R.layout.listview_download_movie,new String[]{"download","play"},new int[]{R.id.movieDownload,R.id.moviePlay});
+//                        SimpleAdapter simpleAdapter=new SimpleAdapter(context,buttonListData,R.tab_focused.listview_download_movie,new String[]{"download","play"},new int[]{R.id.movieDownload,R.id.moviePlay});
 //                        buttonListView.setAdapter(simpleAdapter);
                         MovieDownloadListViewAdapter adapter=new MovieDownloadListViewAdapter(context,buttonListData);
                         buttonListView.setAdapter(adapter);

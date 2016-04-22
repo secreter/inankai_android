@@ -9,21 +9,21 @@
         <item android:id="@+id/movie" android:icon="@mipmap/movie"
             android:title="光影电影" />
         <item android:id="@+id/cartoon" android:icon="@mipmap/cartoon"
-            android:title="十二动漫" />
+            android:title="动漫新番" />
         <item android:id="@+id/music" android:icon="@mipmap/music"
-            android:title="桃源音乐" />
+            android:title="Medi音乐" />
         <item android:id="@+id/testpaper" android:icon="@mipmap/book"
             android:title="南开题库" />
         <item android:id="@+id/treehole" android:icon="@mipmap/treehole"
             android:title="南开树洞" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="联系我们">
         <menu>
             <item android:id="@+id/nav_share" android:icon="@android:drawable/ic_menu_share"
-                android:title="Share" />
+                android:title="分享" />
             <item android:id="@+id/nav_send" android:icon="@android:drawable/ic_menu_send"
-                android:title="Send" />
+                android:title="关于我们" />
         </menu>
     </item>
 

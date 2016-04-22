@@ -4,24 +4,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#eee"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior" tools:showIn="@layout/app_bar_music"
-    tools:context="cn.redream.www.redream.MusicTabActivity">
-<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior" tools:showIn="@layout/app_bar_cartoon"
+    tools:context="cn.redream.www.redream.CartoonActivity">
+<TabHost
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@android:id/tabhost"
-    android:layout_weight="1">
+    android:layout_weight="1"
+>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:background="@color/colorBlank">
-
-
         <TabWidget
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:tabStripEnabled="false"
             android:id="@android:id/tabs"></TabWidget>
+        <!--设置取消下划线-->
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -47,16 +48,15 @@
                     android:paddingTop="15dp"
                     android:paddingBottom="15dp" >
 
-                <SearchView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/searchArtist"
-                    android:imeOptions="actionSearch"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@drawable/search_view_shape"
-                    android:queryHint="搜索歌手"
-                    android:layout_column="1"
-                    />
+                    <SearchView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/searchCartoon"
+                        android:imeOptions="actionSearch"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/search_view_shape"
+                        android:queryHint="搜索动漫"
+                        android:layout_column="1" />
                 </TableRow>
                 </TableLayout>
                 <ScrollView
@@ -64,7 +64,7 @@
                     android:layout_height="match_parent"
                     android:fillViewport="true">
                     <ListView
-                        android:id="@+id/artistList"
+                        android:id="@+id/cartoonList"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"></ListView>
                 </ScrollView>
@@ -75,39 +75,13 @@
                 android:layout_height="match_parent"
                 android:id="@+id/tab2"
                 android:orientation="vertical">
-                <TableLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:collapseColumns="2"
-                    android:stretchColumns="1"
-                    android:background="@color/huibai"
-                    android:layout_marginBottom="10dp">
 
-                <TableRow
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="15dp"
-                    android:paddingBottom="15dp"
-                    >
-
-                <SearchView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/searchTitle"
-                    android:imeOptions="actionSearch"
-                    android:background="@drawable/search_view_shape"
-                    android:queryHint="搜索歌曲"
-                    android:layout_column="1"
-                    />
-                </TableRow>
-                </TableLayout>
                 <ScrollView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:fillViewport="true"
-                    android:id="@+id/titleScrollView">
+                    android:fillViewport="true">
                     <ListView
-                        android:id="@+id/titleList"
+                        android:id="@+id/videoList"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"></ListView>
                 </ScrollView>
@@ -123,12 +97,9 @@
                 <ScrollView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:fillViewport="true"
-                    android:id="@+id/localScrollView">
+                    android:fillViewport="true">
                     <ListView
-                        android:paddingTop="10dp"
-                        android:id="@+id/albumList"
-
+                        android:id="@+id/localList"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"></ListView>
                 </ScrollView>
@@ -139,5 +110,4 @@
         </FrameLayout>
     </LinearLayout>
 </TabHost>
-    </RelativeLayout>
-
+</RelativeLayout>
