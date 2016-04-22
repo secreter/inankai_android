@@ -96,7 +96,7 @@ public class GuideActivity extends Activity {
     private Button.OnClickListener  Button_OnClickListener = new Button.OnClickListener() {
         public void onClick(View v) {
             //设置已经引导
-//            setGuided();
+            setGuided();
 
             //跳转
             Intent mIntent = new Intent();
@@ -107,11 +107,11 @@ public class GuideActivity extends Activity {
     };
 
     private static final String SHAREDPREFERENCES_NAME = "my_pref";
-    private static final String KEY_GUIDE_ACTIVITY = "guide_activity";
+    private static final String FIRST_USE = "first_use";
     private void setGuided(){
-        SharedPreferences settings = getSharedPreferences(SHAREDPREFERENCES_NAME, 0);
+        SharedPreferences settings = getSharedPreferences(SHAREDPREFERENCES_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
-        editor.putString(KEY_GUIDE_ACTIVITY, "false");
+        editor.putString(FIRST_USE, "false");
         editor.commit();
     }
 

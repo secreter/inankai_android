@@ -3,6 +3,7 @@ package cn.redream.www.redream;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -62,6 +63,10 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if(firstUse())
+        {
+            goToGuide();
+        }
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -107,6 +112,7 @@ public class MainActivity extends AppCompatActivity
         adapter = new SimpleAdapter(this, getData(), R.layout.grview_local, new String[]{"icon", "text"}, new int[]{R.id.icon, R.id.text});
         gridView.setAdapter(adapter);
         gridView.setOnItemClickListener(this);
+       // gridView.getSelectedItem()
         share=new WXShareUtil(this);
     }
     private List<Map<String, Object>> getData() {
@@ -341,5 +347,22 @@ public class MainActivity extends AppCompatActivity
     public void goToLocal(View view){
         Intent intent = new Intent(this, LocalMovieActivity.class);
         startActivity(intent);
+    }
+
+    private static final String SHAREDPREFERENCES_NAME = "my_pref";
+    private static final String FIRST_USE = "first_use";
+
+    boolean firstUse()
+    {
+        SharedPreferences sp=getSharedPreferences(SHAREDPREFERENCES_NAME,MODE_PRIVATE);
+        String result=sp.getString(FIRST_USE,"true");//默认返回true，没有创建时是第一次
+        if(result.equals("true"))
+            return true;
+        else return false;
+    }
+    public void goToGuide(){
+        Intent intent = new Intent(this, GuideActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
