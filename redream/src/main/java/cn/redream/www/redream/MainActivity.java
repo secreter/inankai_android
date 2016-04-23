@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity
         //2、新建适配器
         //3、加载适配器
         //4、配置事件监听器
-        dataList = new ArrayList<Map<String, Object>>();
+        dataList = new ArrayList<>();
         adapter = new SimpleAdapter(this, getData(), R.layout.grview_local, new String[]{"icon", "text"}, new int[]{R.id.icon, R.id.text});
         gridView.setAdapter(adapter);
         gridView.setOnItemClickListener(this);
@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity
         tvList=new TvList();
         int len=tvList.localTvName.length;
         for (int i = 0; i < len; i++) {
-            Map<String, Object> map = new HashMap<String, Object>();
+            Map<String, Object> map = new HashMap<>();
             map.put("icon", tvList.localTvIcon[i]);
             map.put("text", tvList.localTvName[i]);
             map.put("link", tvList.localTvLink[i]);
@@ -233,8 +233,8 @@ public class MainActivity extends AppCompatActivity
     private static Boolean isExit = false;
 
     private void exitBy2Click() {
-        Timer tExit = null;
-        if (isExit == false) {
+        Timer tExit;
+        if (!isExit) {
             isExit = true; // 准备退出
             Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
             tExit = new Timer();
@@ -264,7 +264,7 @@ public class MainActivity extends AppCompatActivity
         LinearLayout typeLayout= (LinearLayout) getLayoutInflater()
                 .inflate(R.layout.movie_type,null);
         new AlertDialog.Builder(this)
-                .setIcon(R.mipmap.redream)
+                .setIcon(R.mipmap.ink)
                 .setTitle("电影类型")
                 .setView(typeLayout)
                 .create()
@@ -356,9 +356,7 @@ public class MainActivity extends AppCompatActivity
     {
         SharedPreferences sp=getSharedPreferences(SHAREDPREFERENCES_NAME,MODE_PRIVATE);
         String result=sp.getString(FIRST_USE,"true");//默认返回true，没有创建时是第一次
-        if(result.equals("true"))
-            return true;
-        else return false;
+        return result.equals("true");
     }
     public void goToGuide(){
         Intent intent = new Intent(this, GuideActivity.class);
