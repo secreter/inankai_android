@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent);
 
         } else if (id == R.id.movie) {
-            movieTpye();
+//            movieTpye();
         } else if (id == R.id.cartoon) {
             intent = new Intent(this, CartoonActivity.class);
             startActivity(intent);

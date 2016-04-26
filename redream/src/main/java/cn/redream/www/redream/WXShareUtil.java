@@ -33,7 +33,7 @@ import java.net.URL;
  * Created by acer on 2016/3/15.
  */
 public class WXShareUtil {
-    private String apppId="wx8f3549d85b29e4b6";
+    private String apppId="wx2310d9e8ca8e2f1d";
     private IWXAPI api;
     final boolean PYQ=true;
     final boolean FRIEND=false;

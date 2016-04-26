@@ -24,7 +24,8 @@ import java.util.Map;
  * Created by acer on 2016/3/19.
  */
 public class AsyncCartoonListViewAdapter extends BaseAdapter {
-    private String domain="http://12club.nankai.edu.cn";
+//    private String domain="http://12club.nankai.edu.cn";
+    private String domain="http://222.30.60.30";
     private static final int MSG_UPDATE_POSTER =0x130 ;
     List<Map<String,Object>> list ;
     Context context;

@@ -1,34 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="wrap_content"
+    android:orientation="horizontal" android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:descendantFocusability="blocksDescendants"
-    android:background="#f7f7f7"
+    android:background="#f1f1f1"
     >
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="播放"
-        android:id="@+id/moviePlay"
-        android:onClick="movie_play"
-        />
-    <Button
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="下载"
         android:id="@+id/movieDownload"
         android:onClick="movie_download"
+        android:background="#F12100"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginRight="10dp"
+        android:textSize="16dp"
+        android:textColor="#ffffff"
         />
+
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="分享"
         android:id="@+id/movieShare"
         android:onClick="movie_share"
+        android:background="#ffffff"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="15dp"
+        android:textSize="16dp"
+        android:textColor="#666666"
         />
 
 

@@ -43,7 +43,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:background="#F1F1F1">
                 <ImageView
                     android:id="@+id/moviePoster"
                     android:layout_width="150dp"
@@ -101,11 +102,24 @@
                         android:textSize="14dp"
                         android:paddingLeft="10dp"/>
                     <TextView
+                        android:id="@+id/version"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14dp"
+                        android:paddingLeft="10dp"/>
+                    <TextView
                         android:id="@+id/date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="14dp"
                         android:paddingLeft="10dp"/>
+                    <TextView
+                        android:id="@+id/count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14dp"
+                        android:paddingLeft="10dp"/>
+
                 </LinearLayout>
 
 
@@ -117,18 +131,18 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="10dp"
+                    android:paddingLeft="20dp"
                     android:textSize="18dp"
                     android:paddingTop="8dp"
                     android:paddingBottom="6dp"
-                    android:background="#bd8cff"
+                    android:background="#ffffff"
                     android:elevation="2dip"
                     android:text="剧情简介："/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:background="@color/qinghuan"
+                    android:padding="20dp"
+                    android:background="#ffffff"
                     android:paddingBottom="20dp"
                     android:id="@+id/movieDesc"/>
                 <ListView

@@ -1,5 +1,8 @@
 package cn.redream.www.redream;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -15,10 +18,12 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RemoteViews;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,7 +48,7 @@ import java.util.regex.Pattern;
 public class MovieDescActivity extends AppCompatActivity {
     //这里用光影传奇的域名dns解析特别慢
     public static final String HOME_PAGE_URL="http://222.30.44.37/";
-    public static final String MOVIE_INFO_URL="http://222.30.44.37/filminfo.php";
+        public static final String MOVIE_INFO_URL="http://222.30.44.37/filminfo.php";
     public static final String SMALL_PIC_URL="http://222.30.44.37/posterimgs/small/";
     public static final String BIG_PIC_URL="http://222.30.44.37/posterimgs/big/";
     public static final String GET_IP_UR="http://222.30.44.37/joyview/joyview_getip.php";
@@ -56,12 +61,12 @@ public class MovieDescActivity extends AppCompatActivity {
     private String responseRealUrl;
     private Map<String,String> infoMap=new HashMap<String,String>();
     private String[] infoMapKey=new String[]{
-            "director","actor","country","type","language","time","date","count","movieDesc"
+            "director","actor","country","type","language","time","version","date","count","movieDesc"
     };
     private String[] infoMapKeyZh=new String[]{
-            "导演：","主演：","国家：","类型：","语言：","时间：","上映日期：","下载量：","剧情"
+            "导演：","主演：","国家：","类型：","语言：","片长：","版本", "上映日期：","下载量：","剧情"
     };
-    private List<String> downloadUrlList=new ArrayList<String>();//list只有一个元素的是电影，有多个的是连续剧
+    private List<String> downloadUrlList=new ArrayList<>();//list只有一个元素的是电影，有多个的是连续剧
     private Bitmap posterImg;
     private Handler handler;
     private String  posterimgId;
@@ -77,9 +82,15 @@ public class MovieDescActivity extends AppCompatActivity {
     private TextView movieDescView;
     WXShareUtil share;
 
+    private int len;
+    private int notification_id=0;
+    private List<String> downloadName=new ArrayList<>();
+//    private NotificationManager manager;
+//    private Notification notif;
+
 
     private ListView buttonListView;
-    private List<Map<String,String>> buttonListData=new ArrayList<Map<String,String>>();
+    private List<Map<String,String>> buttonListData=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,13 +151,28 @@ public class MovieDescActivity extends AppCompatActivity {
                     startActivity(intent);
 
                 }
-                if (msg.what==0x126){
-                    Toast.makeText(getApplicationContext(), movieName+"下载成功！", Toast.LENGTH_SHORT).show();
-                    moviePosterView.setImageBitmap(posterImg);
-                }
-                if (msg.what==0x126){
+
+                if (msg.what==0x127){
                     LinearLayout loading= (LinearLayout) findViewById(R.id.loadingAnim);
                     loading.setVisibility(View.GONE);
+                }
+                for (int i = 0; i < notification_id; i++) {
+                    if (msg.what==i){
+                        NotificationManager manager;
+                        Notification notif;
+
+                        manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                        notif= (Notification) msg.obj;
+                        notif.contentView.setTextViewText(R.id.content_view_text1, downloadName.get(i) + "已下载" + Math.round(100 * (float) msg.arg2 / msg.arg1) + "%"+"共"+ msg.arg1 /1048576+"M");
+                        notif.contentView.setProgressBar(R.id.content_view_progress, msg.arg1, msg.arg2, false);
+                        manager.notify(i, notif);
+                        if (msg.arg2== msg.arg1){
+                            manager.cancel(i);
+                            Toast.makeText(getApplicationContext(), downloadName.get(i)+"下载成功！", Toast.LENGTH_SHORT).show();
+                        }
+//
+//                    moviePosterView.setImageBitmap(posterImg);
+                    }
                 }
 
             }
@@ -177,15 +203,15 @@ public class MovieDescActivity extends AppCompatActivity {
         buttonListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(final AdapterView<?> parent, View view, final int position, long id) {
-                Toast.makeText(context,"click",Toast.LENGTH_LONG).show();
-                new Thread(){
+                Toast.makeText(context, "click", Toast.LENGTH_LONG).show();
+                new Thread() {
                     @Override
                     public void run() {
-                        ListView listView= (ListView) parent;
+                        ListView listView = (ListView) parent;
                         HashMap<String, Object> map = (HashMap<String, Object>) listView.getItemAtPosition(position);
-                        Message msg=new Message();
-                        msg.what=0x125;
-                        msg.obj=getRealDownloadUrl((String) map.get("download"));
+                        Message msg = new Message();
+                        msg.what = 0x125;
+                        msg.obj = getRealDownloadUrl((String) map.get("download"));
                         handler.sendMessage(msg);
 
                     }
@@ -193,6 +219,25 @@ public class MovieDescActivity extends AppCompatActivity {
 
             }
         });
+
+    }
+    private void initProgress(String name){
+        NotificationManager manager;
+        Notification notif;
+        Intent intent = new Intent(this,MovieActivity.class);
+        PendingIntent pIntent = PendingIntent.getActivity(this, notification_id, intent, 0);
+        notification_id++;
+        manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notif = new Notification();
+        notif.icon = R.mipmap.ink;
+        notif.tickerText = "新通知";
+
+        //通知栏显示所用到的布局文件
+        notif.contentView = new RemoteViews(getPackageName(), R.layout.notification_view);
+        notif.contentView.setTextViewText(R.id.content_view_text1, name + "正则下载");
+        notif.contentIntent = pIntent;
+        manager.notify(notification_id, notif);
+
 
     }
     public void movie_play(final View view){
@@ -214,17 +259,44 @@ public class MovieDescActivity extends AppCompatActivity {
         }.start();
     }
     public void movie_download(final View view){
-        Toast.makeText(getApplicationContext(), movieName+"正在后台下载，保存在Redream/movie", Toast.LENGTH_LONG).show();
+        final String name;
+        Button btn= (Button) view;
+        name= movieName+(String) btn.getText().subSequence(2,btn.getText().length());
+        Toast.makeText(getApplicationContext(), name+"正在后台下载，保存在inankai/movie", Toast.LENGTH_LONG).show();
         Log.v("pcy", (String) view.getTag());
+//        initProgress(name);
+
+        NotificationManager manager;
+        Notification notif;
+        Intent intent = new Intent(this,MovieActivity.class);
+        PendingIntent pIntent = PendingIntent.getActivity(this, notification_id, intent, 0);
+
+        manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notif = new Notification();
+        notif.icon = R.mipmap.ink;
+        notif.tickerText = "新通知";
+        //通知栏显示所用到的布局文件
+        notif.contentView = new RemoteViews(getPackageName(), R.layout.notification_view);
+        notif.contentView.setTextViewText(R.id.content_view_text1, name+"正则下载");
+        notif.contentIntent = pIntent;
+        manager.notify(notification_id, notif);
+
+        downloadName.add(name);
+        final Message msg=new Message();
+        msg.obj=notif;
+        msg.what=notification_id;
+
+        notification_id++;
+
 
         new Thread() {
             @Override
             public void run() {
                 final String url=getRealDownloadUrl((String) view.getTag());
-                final String name=movieName+".rmvb";
-                final String dirName="Redream/movie";
-                downloadMp3(url, name, dirName);
-                handler.sendEmptyMessage(0x126);
+                final String filename=name+".rmvb";
+                final String dirName="inankai/movie";
+                downloadMp3(url, filename, dirName, msg);
+
             }
 
         }.start();
@@ -239,7 +311,7 @@ public class MovieDescActivity extends AppCompatActivity {
             public void run() {
                 final String url=getRealDownloadUrl((String) view.getTag());
                 String title=movieName;
-                String description="我正用Redream在看南开内网电影哦~";
+                String description="我正用inankai在看南开内网电影哦~";
                 share.sendUrlAudio(url, true, title, description, R.mipmap.movie_share);
                 handler.sendEmptyMessage(0x127);
             }
@@ -252,11 +324,11 @@ public class MovieDescActivity extends AppCompatActivity {
             @Override
             public void run() {
                 response = GetPostUtil.sendGetGbk(MOVIE_INFO_URL, "id="+posterimgId);
-                Pattern p = Pattern.compile("<span style=\"color: #016A9F\">(.*)</span>");
+                Pattern p = Pattern.compile(">\\s+(.+)<span style=\"color: #016A9F\">(.*)</span>");
                 final Matcher m = p.matcher(response);
                 int i = 0;
                 while(m.find()){
-                    infoMap.put(infoMapKey[i], infoMapKeyZh[i]+m.group(1));
+                    infoMap.put(infoMapKey[i], m.group(1)+m.group(2));
                     i++;
                 }
 
@@ -267,21 +339,28 @@ public class MovieDescActivity extends AppCompatActivity {
                 String desc=m2.group(1);
                 desc=desc.replaceAll("&nbsp;"," ");
 
-                infoMap.put(infoMapKey[8], desc+desc);    //之前用这个infoMapKey[i]，结果网站上条目数目不一，有时会超出数组界限
+                infoMap.put(infoMapKey[9], desc+desc);    //之前用这个infoMapKey[i]，结果网站上条目数目不一，有时会超出数组界限
 
                 //下载链接
                 //这个链接还要处理好几次<a onclick="haveclick();hotmovie()" href="joyview://MjAxNlyxvLCufDc0NzB8sbywri5ybXZifDg5MzUyNzc4OXxA" target="_self">下载播放</a>
                 Pattern p3 = Pattern.compile("href=\"joyview://(.*)\" target=\"_self\">(.*)</a>");
                 final Matcher m3 = p3.matcher(response);
                 String realUrl;
+                int j=0;
                 while (m3.find()) {
+                    j++;
                     System.out.println(m3.group(2));
-                    Map<String, String> listItem = new HashMap<String, String>();
+                    Map<String, String> listItem = new HashMap<>();
 
 //                    System.out.println(realUrl);
                     listItem.put("downloadLink",m3.group(1));//存的是joyview的base64信息
                     listItem.put("download", "下载"+m3.group(2));
                     listItem.put("play", "播放" + m3.group(2));
+                    buttonListData.add(listItem);
+                }
+                if (j==0){
+                    //没匹配到，居然上传空。。。。
+                    Map<String, String> listItem = new HashMap<>();
                     buttonListData.add(listItem);
                 }
 
@@ -373,7 +452,7 @@ public class MovieDescActivity extends AppCompatActivity {
         params.height = totalHeight+ (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         listView.setLayoutParams(params);
     }
-    private void downloadMp3(String urlStr,String fileName,String path){
+    private void downloadMp3(String urlStr,String fileName,String path,Message msg_final){
         /*
         @Project: Android_MyDownload
                 * @Desciption: 利用Http协议下载文件并存储到SDCard
@@ -388,6 +467,7 @@ public class MovieDescActivity extends AppCompatActivity {
 
         //String fileName="2.mp3";
         OutputStream output=null;
+
         try {
                 /*
                  * 通过URL取得HttpURLConnection
@@ -397,6 +477,9 @@ public class MovieDescActivity extends AppCompatActivity {
             URL url=new URL(urlStr);
             HttpURLConnection conn=(HttpURLConnection)url.openConnection();
             conn.connect();
+            //获取相应的文件长度
+            int fileLength = conn.getContentLength();
+
             //取得inputStream，并将流中的信息写入SDCard
 
                 /*
@@ -431,11 +514,23 @@ public class MovieDescActivity extends AppCompatActivity {
                 byte[] buffer=new byte[4*1024];
 
                 int length = 0;
+                int done_len=0;
+                int i=0;
                 //将输入流中的内容先输入到buffer中缓存，然后用输出流写到文件中
                 while((length = input.read(buffer)) != -1)
                 {
-                    output.write(buffer,0,length);
-                    System.out.println(length);
+                    output.write(buffer, 0, length);
+//                    System.out.println(length);
+                    done_len=done_len+length;
+                    System.out.println(done_len+"/"+fileLength);
+                    if (i++%1000==0){
+                        Message msg=new Message();
+                        msg.what=msg_final.what;
+                        msg.obj=msg_final.obj;
+                        msg.arg1=fileLength;
+                        msg.arg2=done_len;
+                        handler.sendMessage(msg);
+                    }
                 }
                 output.flush();
                 output.close();

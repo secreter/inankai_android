@@ -26,7 +26,7 @@ import java.util.Map;
  * Created by acer on 2016/3/19.
  */
 public class AsyncMovieListViewAdapter extends BaseAdapter {
-    public static final String SMALL_PIC_URL="http://movie.nankai.edu.cn/posterimgs/small/";
+    public static final String SMALL_PIC_URL="http://222.30.44.37/posterimgs/small/";
     private static final int MSG_UPDATE_POSTER =0x130 ;
     List<Map<String,Object>> list ;
     Context context;
@@ -85,10 +85,18 @@ public class AsyncMovieListViewAdapter extends BaseAdapter {
             movieDesc = (TextView) convertView.findViewById(R.id.movieDesc);
             moviePoster= (ImageView) convertView.findViewById(R.id.moviePoster);
         }
+        if (list.get(position).get("movieName")!=null){
+            movieName.setText(list.get(position).get("movieName").toString());
+        }
+        if (list.get(position).get("movieType")!=null){
+            movieType.setText(list.get(position).get("movieType").toString());
+        }
+        if (list.get(position).get("movieDesc")!=null){
+            movieDesc.setText(list.get(position).get("movieDesc").toString());
+        }
 
-        movieName.setText(list.get(position).get("movieName").toString());
-        movieType.setText(list.get(position).get("movieType").toString());
-        movieDesc.setText(list.get(position).get("movieDesc").toString());
+
+
         //设置异步加载完成前的默认图片，不设置安卓会使用第一屏的图片设置下面几屏，看的时候很混乱
         moviePoster.setImageResource(R.mipmap.movie_loading);
         asynicPoster(moviePoster,  list.get(position).get("posterimgId").toString());

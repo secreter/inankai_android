@@ -6,40 +6,146 @@
 
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/app_bar_movie" tools:context="cn.redream.www.redream.MovieActivity">
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_marginTop="50dp"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:id="@+id/loadingAnim">
-
-        <ProgressBar
-            android:id="@+id/img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:indeterminateDrawable="@drawable/page_loading"
-            style="@style/publicloadingProgressStyle"/>
-
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10.0dip"
-            android:gravity="center"
-            android:paddingLeft="25.0dip"
-            android:paddingRight="25.0dip"
-            android:text="小驴正在努力为您加载，请稍候~"
-            android:textColor="@android:color/black" />
-    </LinearLayout>
-    <ScrollView
+    <TabHost
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp"
-        android:fillViewport="true">
-        <ListView
-            android:id="@+id/movieList"
+        android:id="@android:id/tabhost"
+        android:layout_weight="1"
+        >
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"></ListView>
-    </ScrollView>
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/colorBlank">
+            <TabWidget
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:tabStripEnabled="false"
+                android:id="@android:id/tabs"></TabWidget>
+            <!--设置取消下划线-->
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@android:id/tabcontent">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:id="@+id/tab1">
+
+                    <TableLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:collapseColumns="3"
+                        android:stretchColumns="1"
+                        android:background="@color/huibai"
+                        android:layout_marginBottom="10dp">
+
+                        <TableRow
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp" >
+                            <Spinner
+                                android:id="@+id/movieSpinner"
+                                android:paddingLeft="10dp"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                >
+                            </Spinner>
+
+                            <SearchView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/searchMovie"
+                                android:imeOptions="actionSearch"
+                                android:layout_gravity="center_horizontal"
+                                android:background="@drawable/search_view_shape"
+                                android:queryHint="搜索影片"
+                                android:padding="0dp"
+                                android:layout_column="1"
+                                />
+                        </TableRow>
+                    </TableLayout>
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fillViewport="true">
+                        <ListView
+                            android:id="@+id/typeList"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"></ListView>
+                    </ScrollView>
+
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/tab2"
+                    android:orientation="vertical">
+
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:id="@+id/loadingAnim">
+
+                        <ProgressBar
+                            android:id="@+id/img"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:indeterminateDrawable="@drawable/page_loading"
+                            style="@style/publicloadingProgressStyle"/>
+
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10.0dip"
+                            android:gravity="center"
+                            android:paddingLeft="25.0dip"
+                            android:paddingRight="25.0dip"
+                            android:text="小驴正在努力为您加载，请稍候~"
+                            android:textColor="@android:color/black" />
+                    </LinearLayout>
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="16dp"
+                        android:fillViewport="true">
+                        <ListView
+                            android:id="@+id/movieList"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"></ListView>
+                    </ScrollView>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/tab3"
+                    android:orientation="vertical">
+
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fillViewport="true">
+                        <ListView
+                            android:id="@+id/localList"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"></ListView>
+                    </ScrollView>
+
+
+
+                </LinearLayout>
+            </FrameLayout>
+        </LinearLayout>
+    </TabHost>
 
 </RelativeLayout>

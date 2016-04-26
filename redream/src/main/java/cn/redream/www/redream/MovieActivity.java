@@ -1,11 +1,19 @@
 package cn.redream.www.redream;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
+import android.view.ContextMenu;
+import android.view.Display;
+import android.view.Gravity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,14 +23,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.SimpleAdapter;
+import android.widget.Spinner;
+import android.widget.TabHost;
+import android.widget.TabWidget;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,7 +50,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MovieActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements TabHost.OnTabChangeListener, NavigationView.OnNavigationItemSelectedListener {
     public static final String HOME_PAGE_URL="http://222.30.44.37/";
     public static final String MOVIE_INFO_URL="http://222.30.44.37/filminfo.php?id=";
     public static final String SMALL_PIC_URL="http://222.30.44.37/posterimgs/small/";
@@ -41,20 +60,38 @@ public class MovieActivity extends AppCompatActivity
     public static final String SEARCH_URL="http://222.30.44.37/filmclass.php?action=search";
     public static final String CATEGORY_URL="http://222.30.44.37/filmclass.php";
     private static final int MSG_UPDATE_POSTER =0x130 ;
+    static final String LOCAL_DIR="inankai/movie";
     String response;
+    String typeNumResponse;
     Context context=this;
     public Handler handler;
     WXShareUtil share;
     public Map<String,Bitmap> moviePosterMap=new HashMap<String,Bitmap>();
     private String domain="http://222.30.44.37/";
 //    private String domain="http://movie.nku.cn/";
+    private ListView movieTypeList;
     private ListView movieListView;
     private String movieType;
     private String searchType="name";  //默认搜索片名
     private String searchString;
-    private List<Map<String,Object>> movieListData=new ArrayList<Map<String,Object>>();
+    private List<Map<String,Object>> typeListData=new ArrayList<>();
+    private List<Map<String,Object>> movieListData=new ArrayList<>();
     private MenuItem thisActMenuItem;
     private NavigationView navigationView;
+    private TabHost tabHost;
+    private Spinner searchSpinner;
+    private SearchView searchMovie;
+    private String[] typeArr={
+            "最新","剧情","喜剧","爱情","科幻","奇幻","动作","悬疑","惊悚","战争","动画","记录","外语教学","其它"
+    };
+    private String[] typeArrShow={
+            "最新/New","剧情/Drama","喜剧/Comedy","爱情/Romance","科幻/SciFi","奇幻/Fantasy","动作/Action","悬疑/Mystery","惊悚/Thriller","战争/War","动画/Cartoon","记录/Documentary","外语教学/Teaching","其它/Other"
+    };
+    private String[] typeNum=new String[20];
+    private int[] typeMap={18,14,4,8,17,7,11,2,16,5,10,13,3,6};
+    private ListView localList;
+    private ArrayAdapter<CharSequence> adapterType;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -150,9 +187,166 @@ public class MovieActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-    private void initList() {
+    @Override
+    public void onTabChanged(String tabId) {
+        if ("tab1".equals(tabId)) {
+        }
+        if ("tab2".equals(tabId)) {
+        }
+        tabHost.setCurrentTabByTag(tabId);
+        updateTab(tabHost);
+    }
+
+    private void initTabHost() {
+        tabHost = (TabHost) findViewById(android.R.id.tabhost);
+        //不能少setup()哟~~~
+        tabHost.setup();
+//        //去除原来的灰色的难看的系统自带下划线
+//        tabHost.getTabWidget().setStripEnabled(true);
+
+        TabHost.TabSpec tab1 = tabHost.newTabSpec("tab1")
+                .setIndicator("分类") //创建标题
+                .setContent(R.id.tab1);//创建内容
+        //添加第一个标签页
+        tabHost.addTab(tab1);
+        TabHost.TabSpec tab2 = tabHost.newTabSpec("tab2")
+                .setIndicator("片库") //创建标题
+                .setContent(R.id.tab2);//创建内容
+        //添加第一个标签页
+        tabHost.addTab(tab2);
+        TabHost.TabSpec tab3 = tabHost.newTabSpec("tab3")
+                .setIndicator("本地", getResources() //放置图标
+                        .getDrawable(R.mipmap.games_control))
+                .setContent(R.id.tab3);//创建内容
+        // 添加第一个标签页
+        tabHost.addTab(tab3);
+        updateTab(tabHost);//初始化Tab的颜色，和字体的颜色
+        tabHost.setOnTabChangedListener(this);// 选择监听器
+
+        final TabWidget tabWidget = tabHost.getTabWidget();
+
+    }
+    private void updateTab(final TabHost tabHost) {
+
+        for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {
+            View view = tabHost.getTabWidget().getChildAt(i);
+            TextView tv = (TextView) tabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title);
+            tv.setTextSize(15);
+            tv.setTextColor(getResources().getColor(R.color.colorBlank));
+            if (tabHost.getCurrentTab() == i) {//选中
+                view.setBackgroundResource(R.drawable.tab_focused);
+
+                tv.setTextColor(getResources().getColor(R.color.colorBlank));
+            } else {//不选中
+                view.setBackgroundResource(R.drawable.tab_normal);
+
+                tv.setTextColor(getResources().getColor(R.color.colorGray));
+            }
+
+        }
+    }
+    private void initSearchView(){
+        searchSpinner = (Spinner) findViewById(R.id.movieSpinner);
+
+        //将可选内容与ArrayAdapter连接起来
+        adapterType = ArrayAdapter.createFromResource(this, R.array.search_type, android.R.layout.simple_spinner_item);
+
+        //设置下拉列表的风格
+        adapterType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        //将adapter2 添加到spinner中
+        searchSpinner.setAdapter(adapterType);
+
+        //添加事件Spinner事件监听
+        searchSpinner.setOnItemSelectedListener(new SpinnerXMLSelectedListener());
+
+        //设置默认值
+        searchSpinner.setVisibility(View.VISIBLE);
+
+
+
+        searchMovie= (SearchView) findViewById(R.id.searchMovie);
+        //设置放大镜的图标为黑色
+        int search_mag_icon_id = searchMovie.getContext().getResources().getIdentifier("android:id/search_mag_icon", null, null);
+        ImageView search_mag_icon = (ImageView)searchMovie.findViewById(search_mag_icon_id);//获取搜索图标
+//        ImageView search_button = (ImageView) searchMovie.findViewById(android.R.id.search_button);
+        search_mag_icon.setImageResource(R.mipmap.search3);//图标都是用src的
+        //将其展开后改变图标才有用
+        searchMovie.setIconifiedByDefault(false);
+        //初始时失去焦点
+        searchMovie.setFocusable(false);
+        //设置字体为黑色
+        int id = searchMovie.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+        TextView textView = (TextView) searchMovie.findViewById(id);
+        textView.setTextColor(Color.BLACK);
+        textView.setTextSize(14);
+        textView.setHintTextColor(getResources().getColor(R.color.grey));
+    }
+    //使用XML形式操作
+    class SpinnerXMLSelectedListener implements AdapterView.OnItemSelectedListener {
+        public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
+                                   long arg3) {
+            switch (arg2){
+                case 0:
+                    searchType="name";
+                    break;
+                case 1:
+                    searchType="director";
+                    break;
+                case 2:
+                    searchType="actor";
+                    break;
+            }
+//            if(searchTypeStr=="片名")searchTypeStr="name";
+//            if(searchTypeStr=="导演")searchTypeStr="director";
+//            if(searchTypeStr=="主演")searchTypeStr="actor";
+        }
+
+        public void onNothingSelected(AdapterView<?> arg0) {
+
+        }
+
+    }
+    private void initTypeList(){
+        movieTypeList= (ListView) findViewById(R.id.typeList);
+        new Thread() {
+            @Override
+            public void run() {
+                String url = HOME_PAGE_URL;
+                typeNumResponse = GetPostUtil.sendGetGbk(url, null);
+                //这个有title
+                Pattern p = Pattern.compile("<font color=#6a6969>\\((\\d+)\\)</font>");
+                final Matcher m = p.matcher(typeNumResponse);
+                //只要“分类”里的数字
+                for (int i = 0; i < 18; i++) {
+                    m.find();
+                    typeNum[i]=m.group(1);
+                }
+                typeNum[18]="24";
+
+                //发送消息通知ui线程更新UI组件
+                handler.sendEmptyMessage(0x124);
+            }
+
+        }.start();
+
+
+    }
+
+    private void initMovieList(String type) {
+        if (type != null) {
+            try {
+                movieType=URLEncoder.encode(type, "gbk");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+        movieListData.clear();
         //创建一个List集合，list集合的元素是Map
         new Thread() {
+
+
+
             @Override
             public void run() {
                 String url;
@@ -160,10 +354,10 @@ public class MovieActivity extends AppCompatActivity
                 Intent intent=getIntent();
                 Pattern p;
                 int i = 0;
-                if (intent.getStringExtra("movieType")!=null&&!intent.getStringExtra("movieType").equals("")){
+                if (movieType!=null){
                     //按类型
                     url=CATEGORY_URL;
-                    params="page=0&class=type&content="+intent.getStringExtra("movieType");
+                    params="page=0&class=type&content="+movieType;
                     response = GetPostUtil.sendGetGbk(url,params);
 
                     p = Pattern.compile("<a href=\"javascript:layer1On\\('(\\d+)'\\)\"><img border=\"0\" src=\"(.*)\" width=\"86\" height=\"121\"></a>");
@@ -174,7 +368,7 @@ public class MovieActivity extends AppCompatActivity
                         final Map<String, Object> listItem = new HashMap<String, Object>();
                         listItem.put("posterimgId", m.group(1));
                         try {
-                            listItem.put("movieType", URLDecoder.decode(intent.getStringExtra("movieType"),"gbk"));
+                            listItem.put("movieType", URLDecoder.decode(movieType,"gbk"));
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -238,7 +432,21 @@ public class MovieActivity extends AppCompatActivity
             }
         }.start();
     }
-
+    private void initLocal() {
+        localList= (ListView) findViewById(R.id.localList);
+        List<Map<String, Object>> listItems = new ArrayList<Map<String, Object>>();
+        GetFileList getFileListObj = new GetFileList(Environment.getExternalStorageDirectory() + "/" + LOCAL_DIR, false);
+        ArrayList<String> fileList = getFileListObj.getFileArrayList();
+        int len = fileList.size();
+        for (int i = 0; i < len; i++) {
+            Map<String, Object> listItem = new HashMap<String, Object>();
+            listItem.put("img", R.mipmap.movie_play);
+            listItem.put("name", fileList.get(i));
+            listItems.add(listItem);
+        }
+        SimpleAdapter simpleAdapter = new SimpleAdapter(this, listItems, R.layout.listview_cartoon_local, new String[]{"img", "name"}, new int[]{R.id.header, R.id.name});
+        localList.setAdapter(simpleAdapter);
+    }
 
     private void handMessage(){
         handler=new Handler(){
@@ -258,27 +466,68 @@ public class MovieActivity extends AppCompatActivity
                     }
 
                 }
-
+                //更新typelist
+                if (msg.what==0x124){
+                    for (int i = 0; i < typeArr.length; i++) {
+                        Map<String, Object> listItem = new HashMap<String, Object>();
+                        listItem.put("type",typeArr[i]);
+                        listItem.put("name", typeArrShow[i]);
+                        listItem.put("desc", typeNum[typeMap[i]]+"Movies");
+                        typeListData.add(listItem);
+                    }
+                    MovieTypeAdapter adapter=new MovieTypeAdapter(context,typeListData);
+                    movieTypeList.setAdapter(adapter);
+                }
 
             }
         };
     }
     private void init(){
         movieListView= (ListView) findViewById(R.id.movieList);
-        initList();
+        initTabHost();
+        initSearchView();
+        initTypeList();
+        initMovieList(null);
+        initLocal();
         handMessage();
         movieListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ListView listView= (ListView) parent;
+                ListView listView = (ListView) parent;
                 HashMap<String, Object> map = (HashMap<String, Object>) listView.getItemAtPosition(position);
-                Intent intent=new Intent();
+                Intent intent = new Intent();
                 intent.setClass(context, MovieDescActivity.class);
                 intent.putExtra("posterimgId", map.get("posterimgId").toString());
                 intent.putExtra("movieName", map.get("movieName").toString());
                 startActivity(intent);
             }
         });
+        movieTypeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ListView listView = (ListView) parent;
+                HashMap<String, Object> map = (HashMap<String, Object>) listView.getItemAtPosition(position);
+                String type = map.get("type").toString() != "最新" ? map.get("type").toString() : null;
+                initMovieList(type);
+                //选中第一个tab
+                tabHost.setCurrentTab(1);
+                LinearLayout loading = (LinearLayout) findViewById(R.id.loadingAnim);
+                loading.setVisibility(View.VISIBLE);
+            }
+        });
+        localList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ListView listView = (ListView) parent;
+                HashMap<String, Object> map = (HashMap<String, Object>) listView.getItemAtPosition(position);
+
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                String path = Environment.getExternalStorageDirectory() + "/" + LOCAL_DIR + "/" + map.get("fileName");
+                intent.setDataAndType(Uri.fromFile(new File(path)), "video/*");
+                startActivity(intent);
+            }
+        });
+        this.registerForContextMenu(localList);
     }
     private String strToGbk(String uft8Str){
         String str=null;
@@ -298,7 +547,85 @@ public class MovieActivity extends AppCompatActivity
         }
         return str;
     }
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        if(v==localList){
+            menu.add(0,20,2,"删除");
+            menu.add(0,21,3,"menu");
+        }else{
+            menu.add(0,11,2,"分享到朋友圈");
+            menu.add(0,12,3,"分享给微信好友");
+        }
 
+
+    }
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo menuInfo;
+        menuInfo= (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        int index=menuInfo.position;
+        //注意，这里targetView是linearlayout，要getParent()才是ListView
+        ListView listView= (ListView) menuInfo.targetView.getParent();
+        final HashMap<String, Object> map = (HashMap<String, Object>) listView.getItemAtPosition(index);
+        String title=map.get("name").toString();
+
+        switch (item.getItemId()){
+            case 20:
+                String path=Environment.getExternalStorageDirectory()+"/"+LOCAL_DIR+"/"+title;
+                Log.v("pcy", path);
+                if (deleteFile(path)){
+                    Toast.makeText(this, "删除成功", Toast.LENGTH_SHORT).show();
+                    initLocal();
+                }else{
+                    Toast.makeText(this,"删除失败",Toast.LENGTH_SHORT).show();
+                }
+
+                break;
+            case 21:
+//                AlertDialog dialog = new AlertDialog.Builder(this)
+//                        .setTitle("title").setMessage("message").create();
+//                Window window = dialog.getWindow();
+//                window.setGravity(Gravity.BOTTOM);  //此处可以设置dialog显示的位置
+//                //window.setWindowAnimations(R.style.mystyle);  //添加动画
+//                dialog.show();
+
+                LinearLayout typeLayout= (LinearLayout) getLayoutInflater()
+                        .inflate(R.layout.share_menu,null);
+                AlertDialog dialog=new AlertDialog.Builder(this, R.style.Dialog_Fullscreen)
+                        .setIcon(R.mipmap.ink)
+                        .setTitle("电影类型")
+                        .setView(typeLayout)
+                        .create();
+                dialog.show();
+
+
+                //宽度全屏
+                Window win = dialog.getWindow();
+                win.setGravity(Gravity.BOTTOM);  //此处可以设置dialog显示的位置,底部显示
+                win.getDecorView().setPadding(0, 0, 0, 0);
+                WindowManager.LayoutParams lp = win.getAttributes();
+                lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+                lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+                win.setAttributes(lp);
+
+
+
+                break;
+
+        }
+        return true;
+    }
+    public boolean deleteFile(String sPath) {
+        boolean flag = false;
+        File file = new File(sPath);
+        // 路径为文件且不为空则进行删除
+        if (file.isFile() && file.exists()) {
+            file.delete();
+            flag=true;
+        }
+        return flag;
+    }
 
 
 
