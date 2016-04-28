@@ -151,10 +151,10 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        String title="redream";
-        String desc="ipv6电视、光影传奇、十二社区、桃源音乐，在南开用Redream就够了，不走流量哦~";
-        String url="http://www.redream.cn/main/ipv6tv.php";
-        Bitmap bitmap= BitmapFactory.decodeResource(getResources(), R.mipmap.redream);
+        String title = "ipv6电视、光影传奇、十二社区、桃源音乐，在南开用inankai就够了，不走流量哦~";
+        String desc = "一款南开必备神器，墙裂推荐！";
+        String url = "http://inankai.cn";
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ink);
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_share_pyq) {
@@ -199,11 +199,11 @@ public class MainActivity extends AppCompatActivity
             intent = new Intent(this, TreeholeActivity.class);
             startActivity(intent);
         }else if (id == R.id.nav_share) {
-            String title="ipv6电视、光影传奇、十二社区、桃源音乐，在南开用Redream就够了，不走流量哦~";
-            String desc="一款南开必备神器，墙裂推荐！";
-            String url="http://www.redream.cn/main/ipv6tv.php";
-            Bitmap bitmap= BitmapFactory.decodeResource(getResources(), R.mipmap.redream);
-            share.sendUrl(url,true,title,desc,bitmap);
+            String title = "ipv6电视、光影传奇、十二社区、桃源音乐，在南开用inankai就够了，不走流量哦~";
+            String desc = "一款南开必备神器，墙裂推荐！";
+            String url = "http://inankai.cn";
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ink);
+            share.sendUrl(url, true, title, desc, bitmap);
         } else if (id == R.id.nav_send) {
             intent = new Intent(this, AboutActivity.class);
             startActivity(intent);

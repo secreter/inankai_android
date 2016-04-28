@@ -7,9 +7,9 @@
 
     <ImageView
         android:id="@+id/cartoonPoster"
-        android:layout_width="100dp"
-        android:layout_height="160dp"
-        android:scaleType="centerInside"
+        android:layout_width="130dp"
+        android:layout_height="200dp"
+        android:scaleType="fitCenter"
         android:paddingLeft="10dp"
         android:paddingTop="3dp"
         android:paddingBottom="3dp"/>

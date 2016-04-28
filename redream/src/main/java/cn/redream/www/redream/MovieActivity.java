@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -145,13 +146,24 @@ public class MovieActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        String title = "ipv6电视、光影传奇、十二社区、桃源音乐，在南开用inankai就够了，不走流量哦~";
+        String desc = "一款南开必备神器，墙裂推荐！";
+        String url = "http://inankai.cn";
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ink);
+
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_share_pyq) {
+            share.sendUrl(url,true,title,desc,bitmap);
+            return true;
+        }
+        if (id == R.id.action_share_friend) {
+            share.sendUrl(url,false,title,desc,bitmap);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -179,9 +191,14 @@ public class MovieActivity extends AppCompatActivity
             intent = new Intent(this, TreeholeActivity.class);
             startActivity(intent);
         }else if (id == R.id.nav_share) {
-
+            String title = "ipv6电视、光影传奇、十二社区、桃源音乐，在南开用inankai就够了，不走流量哦~";
+            String desc = "一款南开必备神器，墙裂推荐！";
+            String url = "http://inankai.cn";
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ink);
+            share.sendUrl(url, true, title, desc, bitmap);
         } else if (id == R.id.nav_send) {
-
+            intent = new Intent(this, AboutActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

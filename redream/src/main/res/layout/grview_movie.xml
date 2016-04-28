@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="@drawable/grid_view_item_selector">
+    android:background="@drawable/layoutborder">
     <cn.redream.www.redream.MovieLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -15,14 +15,15 @@
         <ImageView
             android:id="@+id/moviePoster"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scaleType="centerCrop"
+            android:layout_height="150dp"
+            android:scaleType="fitCenter"
             />
         <TextView
             android:id="@+id/movieName"
             android:paddingTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="#000000"
             />
     </cn.redream.www.redream.MovieLayout>
 </LinearLayout>
