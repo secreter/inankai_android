@@ -553,7 +553,7 @@ public class MovieActivity extends AppCompatActivity
         super.onCreateContextMenu(menu, v, menuInfo);
         if(v==localList){
             menu.add(0,20,2,"删除");
-            menu.add(0,21,3,"menu");
+//            menu.add(0,21,3,"menu");
         }else{
             menu.add(0,11,2,"分享到朋友圈");
             menu.add(0,12,3,"分享给微信好友");
