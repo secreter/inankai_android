@@ -13,14 +13,14 @@
         android:paddingBottom="20dp"
         android:background="@color/danhuan">
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:padding="10dp"
-            android:src="@mipmap/redream"/>
+            android:src="@mipmap/ink"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Redream"/>
+            android:text="ink Media"/>
 
     </LinearLayout>
     <LinearLayout
@@ -67,7 +67,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="www.redream.cn"/>
+            android:text="http://inankai.cn"/>
     </LinearLayout>
     <LinearLayout
         android:paddingLeft="@dimen/activity_horizontal_margin"
