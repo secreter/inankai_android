@@ -24,7 +24,7 @@ import java.util.Map;
  * Created by So on 2016/4/28.
  */
 public class AsyncMovieGridviewAdapter extends BaseAdapter {
-    public static final String SMALL_PIC_URL="http://222.30.44.37/posterimgs/big/";
+    public static final String SMALL_PIC_URL="http://222.30.44.37/posterimgs/small/";
     private static final int MSG_UPDATE_POSTER =0x130 ;
     List<Map<String,Object>> list ;
     Context context;
