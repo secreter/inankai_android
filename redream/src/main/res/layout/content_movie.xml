@@ -118,10 +118,25 @@
                         android:layout_height="match_parent"
                         android:padding="16dp"
                         android:fillViewport="true">
-                        <ListView
-                            android:id="@+id/movieList"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"></ListView>
+                        <!--<ListView-->
+                            <!--android:id="@+id/movieList"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="wrap_content"></ListView>-->
+                        <GridView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/movieGridview"
+                            android:numColumns="auto_fit"
+                            android:columnWidth="100dp"
+
+                            android:paddingTop="10dp"
+                            android:horizontalSpacing="1dp"
+                            android:verticalSpacing="1dp"
+                            android:gravity="center"
+                            android:stretchMode="columnWidth"
+                            android:listSelector="@drawable/grid_view_item_selector"
+                            >
+                        </GridView>
                     </ScrollView>
 
                 </LinearLayout>

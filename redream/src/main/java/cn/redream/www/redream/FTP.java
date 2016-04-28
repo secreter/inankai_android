@@ -142,14 +142,19 @@ public class FTP {
 		InputStream input = ftpClient.retrieveFileStream(serverPath);
 		byte[] b = new byte[1024];
 		int length = 0;
+		int i=0;
 		while ((length = input.read(b)) != -1) {
 			out.write(b, 0, length);
 			currentSize = currentSize + length;
-			if (currentSize / step != process) {
-				process = currentSize / step;
-				if (process % 5 == 0) {  //每隔%5的进度返回一次
-					listener.onDownLoadProgress(FTP_DOWN_LOADING, process, null);
-				}
+//			if (currentSize / step != process) {
+//				process = currentSize / step;
+//				if (process % 5 == 0) {  //每隔%5的进度返回一次
+//					listener.onDownLoadProgress(FTP_DOWN_LOADING, process, null);
+//				}
+//			}
+
+			if (i++%500==0) {
+				listener.onDownLoadProgress(FTP_DOWN_LOADING, currentSize, null);
 			}
 		}
 		out.flush();

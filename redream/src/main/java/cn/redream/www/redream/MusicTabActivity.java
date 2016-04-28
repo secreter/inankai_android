@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Environment;
@@ -65,7 +66,7 @@ public class MusicTabActivity extends AppCompatActivity implements TabHost.OnTab
     String response;
     Context context;
     WXShareUtil share;
-    final String LOCAL_DIR="Redream/music";
+    final String LOCAL_DIR="inankai/music";
 
     private SearchView searchArtist;
     private SearchView searchTitle;
@@ -122,6 +123,8 @@ public class MusicTabActivity extends AppCompatActivity implements TabHost.OnTab
         search_mag_icon1.setImageResource(R.mipmap.search3);//图标都是用src的
         //将其展开后改变图标才有用
         searchArtist.setIconifiedByDefault(false);
+        //初始时失去焦点
+        searchArtist.setFocusable(false);
 
         //设置字体为黑色
         int id1 = searchArtist.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
@@ -137,6 +140,8 @@ public class MusicTabActivity extends AppCompatActivity implements TabHost.OnTab
 
         //将其展开后改变图标才有用
         searchTitle.setIconifiedByDefault(false);
+        //初始时失去焦点
+        searchTitle.setFocusable(false);
 
         //设置字体为黑色
         int id2 = searchTitle.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
@@ -210,9 +215,21 @@ public class MusicTabActivity extends AppCompatActivity implements TabHost.OnTab
                 HashMap<String, Object> map = (HashMap<String, Object>) listView.getItemAtPosition(position);
                 Intent intent = new Intent();
                 Uri uri = Uri.parse("http://music.nankai.edu.cn/download.php?id="+map.get("id"));
-                intent.setDataAndType(uri, "audio/mp3");
+                intent.setDataAndType(uri, "audio/x-mpeg");
                 intent.setAction(Intent.ACTION_VIEW);
                 startActivity(intent);
+
+//                MediaPlayer mediaPlayer = new MediaPlayer();
+//                mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);// 设置媒体流类型
+//                mediaPlayer.reset();
+//
+//                try {
+//                    mediaPlayer.setDataSource("http://music.nankai.edu.cn/download.php?id="+map.get("id")); // 设置数据源
+//                    mediaPlayer.prepare(); // prepare自动播放
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//                mediaPlayer.start();//开始播放
 
             }
         });
@@ -285,7 +302,7 @@ public class MusicTabActivity extends AppCompatActivity implements TabHost.OnTab
                     Map<String,Object> listItem=new HashMap<String,Object>();
                     listItem.put("header",R.mipmap.chenyixun);
                     listItem.put("personName",m.group(1));
-                    listItem.put("desc","redream");
+                    listItem.put("desc","ink media");
                     listItems.add(listItem);
                 }
                 SimpleAdapter simpleAdapter=new SimpleAdapter(context,listItems,R.layout.listview,new String[]{"header","personName","desc"},new int[]{R.id.header,R.id.name,R.id.desc});
@@ -306,7 +323,7 @@ public class MusicTabActivity extends AppCompatActivity implements TabHost.OnTab
                     listItem.put("id",m.group(2));
                     listItems.add(listItem);
                 }
-                SimpleAdapter simpleAdapter=new SimpleAdapter(context,listItems,R.layout.listview,new String[]{"singImg","singName","artist"},new int[]{R.id.header,R.id.name,R.id.desc});
+                SimpleAdapter simpleAdapter=new SimpleAdapter(context,listItems,R.layout.listview_song,new String[]{"singImg","singName","artist"},new int[]{R.id.header,R.id.name,R.id.desc});
                 titleList.setAdapter(simpleAdapter);
                 if (i==0){
                     Toast.makeText(context,"暂时没有搜到结果~换个试试吧~",Toast.LENGTH_LONG).show();
@@ -451,13 +468,14 @@ public class MusicTabActivity extends AppCompatActivity implements TabHost.OnTab
         List<Map<String,Object>> listItems=new ArrayList<Map<String,Object>>();
         for (int i=0;i<singNames.length;i++){
             Map<String,Object> listItem=new HashMap<String,Object>();
-            listItem.put("singImg",singImgsId[i%8]);
+//            listItem.put("singImg",singImgsId[i%8]);
+            listItem.put("singImg",R.mipmap.songs);
             listItem.put("singName",singNames[i]);
             listItem.put("artist",singDesc[i]);
             listItem.put("id",singId[i]);
             listItems.add(listItem);
         }
-        SimpleAdapter simpleAdapter=new SimpleAdapter(this,listItems,R.layout.listview,new String[]{"singImg","singName","artist"},new int[]{R.id.header,R.id.name,R.id.desc});
+        SimpleAdapter simpleAdapter=new SimpleAdapter(this,listItems,R.layout.listview_song,new String[]{"singImg","singName","artist"},new int[]{R.id.header,R.id.name,R.id.desc});
         titleList.setAdapter(simpleAdapter);
     }
     private void initLocal(){
@@ -559,14 +577,14 @@ public class MusicTabActivity extends AppCompatActivity implements TabHost.OnTab
         int imgId;
         final String url="http://music.nankai.edu.cn/download.php?id="+map.get("id");
         final String name=map.get("artist")+"___"+map.get("singName")+"___"+map.get("id")+".mp3";
-        final String dirName="Redream/music";
-        String title=map.get("singName").toString();
+        final String dirName="inankai/music";
+        String title=map.get("singName").toString()+" | inankai media";
         String description="我正在听南开内网音乐哦~";
 
         switch (item.getItemId()){
             case 10:
 
-                Toast.makeText(getApplicationContext(), map.get("singName")+"正在后台下载，保存在Redream/music", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), map.get("singName")+"正在后台下载，保存在inankai/music", Toast.LENGTH_LONG).show();
                 new Thread() {
                     @Override
                     public void run() {
@@ -852,10 +870,10 @@ public class MusicTabActivity extends AppCompatActivity implements TabHost.OnTab
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        String title = "redream";
-        String desc = "ipv6电视、光影传奇、十二社区、桃源音乐，在南开用Redream就够了，不走流量哦~";
-        String url = "http://www.redream.cn/main/ipv6tv.php";
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.redream);
+        String title = "inankai media|一款神奇的南开软件";
+        String desc = "ipv6电视、光影传奇、十二社区、桃源音乐，在南开用inankai就够了，不走流量哦~";
+        String url = "http://inankai.cn";
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ink);
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_share_pyq) {
@@ -885,7 +903,8 @@ public class MusicTabActivity extends AppCompatActivity implements TabHost.OnTab
             startActivity(intent);
 
         } else if (id == R.id.movie) {
-            movieTpye();
+            intent = new Intent(this, MovieActivity.class);
+            startActivity(intent);
         } else if (id == R.id.cartoon) {
             intent = new Intent(this, CartoonActivity.class);
             startActivity(intent);
@@ -898,10 +917,10 @@ public class MusicTabActivity extends AppCompatActivity implements TabHost.OnTab
             intent = new Intent(this, TreeholeActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_share) {
-            String title = "ipv6电视、光影传奇、十二社区、桃源音乐，在南开用Redream就够了，不走流量哦~";
+            String title = "ipv6电视、光影传奇、十二社区、桃源音乐，在南开用inankai就够了，不走流量哦~";
             String desc = "一款南开必备神器，墙裂推荐！";
-            String url = "http://www.redream.cn/main/ipv6tv.php";
-            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.redream);
+            String url = "http://inankai.cn";
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ink);
             share.sendUrl(url, true, title, desc, bitmap);
         } else if (id == R.id.nav_send) {
             intent = new Intent(this, AboutActivity.class);
@@ -916,7 +935,7 @@ public class MusicTabActivity extends AppCompatActivity implements TabHost.OnTab
         LinearLayout typeLayout= (LinearLayout) getLayoutInflater()
                 .inflate(R.layout.movie_type,null);
         new AlertDialog.Builder(this)
-                .setIcon(R.mipmap.redream)
+                .setIcon(R.mipmap.ink)
                 .setTitle("电影类型")
                 .setView(typeLayout)
                 .create()

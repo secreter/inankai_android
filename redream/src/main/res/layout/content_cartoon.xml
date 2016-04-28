@@ -67,7 +67,11 @@
                     <ListView
                         android:id="@+id/cartoonList"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"></ListView>
+                        android:layout_height="wrap_content"
+                        android:background="#ffffff"
+                        android:listSelector="@drawable/listitem_selector"
+                        android:divider="#e6e6e6"
+                        android:dividerHeight="1px"></ListView>
                 </ScrollView>
 
             </LinearLayout>
@@ -84,7 +88,11 @@
                     <ListView
                         android:id="@+id/videoList"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"></ListView>
+                        android:layout_height="wrap_content"
+                        android:background="#ffffff"
+                        android:listSelector="@drawable/listitem_selector"
+                        android:divider="#e6e6e6"
+                        android:dividerHeight="1px"></ListView>
                 </ScrollView>
 
 
@@ -102,7 +110,11 @@
                     <ListView
                         android:id="@+id/localList"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"></ListView>
+                        android:layout_height="wrap_content"
+                        android:background="#ffffff"
+                        android:listSelector="@drawable/listitem_selector"
+                        android:divider="#e6e6e6"
+                        android:dividerHeight="1px"></ListView>
                 </ScrollView>
 
 

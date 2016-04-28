@@ -1,5 +1,8 @@
 package cn.redream.www.redream;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -18,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RemoteViews;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,6 +46,7 @@ public class CartoonDescActivity extends AppCompatActivity {
     public static final String FTP_DOWN_SUCCESS = "ftp文件下载成功";
     public static final String FTP_DOWN_FAIL = "ftp文件下载失败";
     Context context=this;
+    RedreamApp redreamApp;
     private ArrayList<HashMap<String,Object>> listMap;
     private HashMap<String,Object> map;
     private ImageView imageView;
@@ -59,8 +64,12 @@ public class CartoonDescActivity extends AppCompatActivity {
     private Handler handler;
     private Bitmap bitmap;
     private String domain="http://12club.nankai.edu.cn";
-    final Map<String,Object> listItem=new HashMap<String,Object>();
-    private List<Map<String,Object>>  downloadList=new ArrayList<Map<String,Object>>();
+    final Map<String,Object> listItem=new HashMap<>();
+    private List<Map<String,Object>>  downloadList=new ArrayList<>();
+    private int notification_id;
+    private List<String> downloadName=new ArrayList();    //正在下载的name 索引是notification_id
+    private List<String> downloadStorage=new ArrayList(); //正在下载的大小 索引是notification_id
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +82,7 @@ public class CartoonDescActivity extends AppCompatActivity {
         stateTv= (TextView) findViewById(R.id.state);
         downloadCountTv= (TextView) findViewById(R.id.downloadCount);
         listview= (ListView) findViewById(R.id.download_list);
+        redreamApp = ((RedreamApp)getApplicationContext());   //用他的cartoonUrlList来存储正在下载的cartoon，不让再次点击覆盖下载
 
 
         descLink=getIntent().getStringExtra("descLink");
@@ -88,18 +98,35 @@ public class CartoonDescActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ListView listView = (ListView) parent;
+                view.setEnabled(false); //禁止点击，好像没用
+
                 ImageView imageView = (ImageView) view.findViewById(R.id.img);
-                imageView.setImageResource(R.mipmap.download_active);
+                imageView.setImageResource(R.mipmap.icon_download_active);
                 final HashMap<String, Object> map = (HashMap<String, Object>) listView.getItemAtPosition(position);
-                Toast.makeText(context, domain + map.get("downloadLink").toString(), LENGTH_SHORT).show();
+
+                if (redreamApp.cartoonUrlList.contains(map.get("downloadLink").toString())){
+                    Toast.makeText(context, listItem.get("name") + map.get("episode").toString()+"已在下载！", LENGTH_SHORT).show();
+                    return;
+                }
+//                Toast.makeText(context, domain + map.get("downloadLink").toString(), LENGTH_SHORT).show();
+                redreamApp.cartoonUrlList.add(map.get("downloadLink").toString());  //加入正在下载的list
                 final String filename = listItem.get("name") + map.get("episode").toString() + ".MP4";
-                final String localPath = Environment.getExternalStorageDirectory() + "/Redream/comic";
+                final String localPath = Environment.getExternalStorageDirectory() + "/inankai/comic";
+                String fileSizeStr=map.get("storage").toString();
+                if (fileSizeStr.equals("未知")){
+                    fileSizeStr="150";
+                }
+                final Float fileSize=Float.parseFloat(fileSizeStr.substring(0, fileSizeStr.length() - 3))*1048576;
+                Toast.makeText(CartoonDescActivity.this, fileSize+"b", Toast.LENGTH_SHORT).show();
+
+
+
+
+
                 new Thread() {
                     @Override
                     public void run() {
-
                         Map<String, List<String>> headerMap = GetPostUtil.getHeaer(domain + map.get("downloadLink").toString(), "");
-
                         ftpAddr = headerMap.get("Location").get(0);
                         try {
                             ftpAddr = URLDecoder.decode(ftpAddr, "utf-8");
@@ -117,6 +144,30 @@ public class CartoonDescActivity extends AppCompatActivity {
                             System.out.println("fail");
                         }
 
+                        //进度条
+                        NotificationManager manager;
+                        final Notification notif;
+                        Intent intent = new Intent(context,CartoonActivity.class);
+                        PendingIntent pIntent = PendingIntent.getActivity(context, notification_id, intent, 0);
+                        manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                        notif = new Notification();
+                        notif.icon = R.mipmap.ink;
+                        notif.tickerText = "inankai";
+                        //通知栏显示所用到的布局文件
+                        notif.contentView = new RemoteViews(getPackageName(), R.layout.notification_view);
+                        notif.contentView.setTextViewText(R.id.content_view_text1, listItem.get("name") + map.get("episode").toString() + "正则下载");
+                        notif.contentIntent = pIntent;
+                        manager.notify(notification_id, notif);
+
+                        downloadName.add((String) listItem.get("name")+map.get("episode").toString());
+                        downloadStorage.add((String) map.get("storage"));
+                        final int notificationId=notification_id;
+                        notification_id++;
+
+
+
+
+
                         // 下载
                         try {
 //							String name="/cartoon2/16-01/haruchika/";
@@ -129,7 +180,14 @@ public class CartoonDescActivity extends AppCompatActivity {
                                     if (currentStep.equals(FTP_DOWN_SUCCESS)) {
                                         Log.d("cartoonDownload", "-----xiazai--successful");
                                     } else if (currentStep.equals(FTP_DOWN_LOADING)) {
-                                        Log.d("cartoonDownload", "-----xiazai---" + downProcess + "%");
+                                        Log.d("cartoonDownload", "-----xiazai---" + downProcess + "B");
+
+                                        Message msg=new Message();
+                                        msg.obj=notif;
+                                        msg.arg1=Math.round(fileSize);
+                                        msg.what=notificationId;
+                                        msg.arg2=Math.round(downProcess);
+                                        handler.sendMessage(msg);
                                     }
                                 }
 
@@ -202,7 +260,7 @@ public class CartoonDescActivity extends AppCompatActivity {
                     Map<String,Object> downloadMap=new HashMap<String, Object>();
                     System.out.println(m2.group(1));
                     downloadMap.put("downloadLink", m2.group(1));
-                    downloadMap.put("img", R.mipmap.download_default);
+                    downloadMap.put("img", R.mipmap.icon_download_normal);
                     downloadMap.put("episode", m2.group(2));
                     downloadMap.put("storage",m2.group(4));
                     downloadList.add(downloadMap);
@@ -215,7 +273,7 @@ public class CartoonDescActivity extends AppCompatActivity {
                         Map<String,Object> downloadMap=new HashMap<String, Object>();
                         System.out.println(m2.group(1));
                         downloadMap.put("downloadLink", m2.group(1));
-                        downloadMap.put("img", R.mipmap.download_default);
+                        downloadMap.put("img", R.mipmap.icon_download_normal);
                         downloadMap.put("episode", m2.group(2));
                         downloadMap.put("storage","未知");
                         downloadList.add(downloadMap);
@@ -274,6 +332,22 @@ public class CartoonDescActivity extends AppCompatActivity {
                 if (msg.what==0x125){
                     System.out.println(25);
                     Toast.makeText(context,"下载完成",Toast.LENGTH_LONG).show();
+                }
+                for (int i = 0; i < notification_id; i++) {
+                    if (msg.what==i){
+                        NotificationManager manager;
+                        Notification notif;
+
+                        manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                        notif= (Notification) msg.obj;
+                        notif.contentView.setTextViewText(R.id.content_view_text1, downloadName.get(i) + "已下载" + Math.round(100 * (float) msg.arg2 / msg.arg1) + "%"+"共"+ msg.arg1 /1048576+"M");
+                        notif.contentView.setProgressBar(R.id.content_view_progress, msg.arg1, msg.arg2, false);
+                        manager.notify(i, notif);
+                        if (msg.arg2== msg.arg1){
+                            manager.cancel(i);
+                            Toast.makeText(getApplicationContext(), downloadName.get(i)+"下载成功！", Toast.LENGTH_SHORT).show();
+                        }
+                    }
                 }
 
             }

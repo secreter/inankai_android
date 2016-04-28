@@ -19,9 +19,6 @@
         android:gravity="center"
         android:stretchMode="columnWidth"
         android:listSelector="@drawable/grid_view_item_selector"
-
        >
-
-
     </GridView>
 </RelativeLayout>

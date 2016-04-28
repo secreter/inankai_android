@@ -62,11 +62,18 @@
                 <ScrollView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:fillViewport="true">
+                    android:fillViewport="true"
+                    android:background="#ffffff"
+
+                    >
                     <ListView
                         android:id="@+id/artistList"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"></ListView>
+                        android:layout_height="wrap_content"
+                        android:footerDividersEnabled="true"
+                        android:listSelector="@drawable/listitem_selector"
+                        android:divider="#f1f1f1"
+                        android:dividerHeight="1px"></ListView>
                 </ScrollView>
 
             </LinearLayout>
@@ -86,8 +93,8 @@
                 <TableRow
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingTop="15dp"
-                    android:paddingBottom="15dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
                     >
 
                 <SearchView
@@ -105,11 +112,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fillViewport="true"
-                    android:id="@+id/titleScrollView">
+                    android:id="@+id/titleScrollView"
+                    android:background="#ffffff">
                     <ListView
                         android:id="@+id/titleList"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"></ListView>
+                        android:layout_height="wrap_content"
+                        android:footerDividersEnabled="true"
+                        android:background="#ffffff"
+                        android:listSelector="@drawable/listitem_selector"
+                        android:divider="#f1f1f1"
+                        android:dividerHeight="1px"></ListView>
                 </ScrollView>
 
 
@@ -128,9 +141,12 @@
                     <ListView
                         android:paddingTop="10dp"
                         android:id="@+id/albumList"
-
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"></ListView>
+                        android:layout_height="wrap_content"
+                        android:footerDividersEnabled="true"
+                        android:background="#ffffff"
+                        android:divider="#f1f1f1"
+                        android:dividerHeight="1px"></ListView>
                 </ScrollView>
 
 

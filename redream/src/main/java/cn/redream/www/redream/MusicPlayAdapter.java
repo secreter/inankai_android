@@ -81,7 +81,7 @@ public class MusicPlayAdapter extends BaseAdapter {
             }
 
         }else{
-            v.setBackgroundResource(R.color.huibai);  //其他项背景
+            v.setBackgroundResource(R.color.colorBlank);  //其他项背景
         }
 
         return v;

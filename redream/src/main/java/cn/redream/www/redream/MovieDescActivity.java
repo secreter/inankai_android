@@ -266,32 +266,35 @@ public class MovieDescActivity extends AppCompatActivity {
         Log.v("pcy", (String) view.getTag());
 //        initProgress(name);
 
-        NotificationManager manager;
-        Notification notif;
-        Intent intent = new Intent(this,MovieActivity.class);
-        PendingIntent pIntent = PendingIntent.getActivity(this, notification_id, intent, 0);
 
-        manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notif = new Notification();
-        notif.icon = R.mipmap.ink;
-        notif.tickerText = "新通知";
-        //通知栏显示所用到的布局文件
-        notif.contentView = new RemoteViews(getPackageName(), R.layout.notification_view);
-        notif.contentView.setTextViewText(R.id.content_view_text1, name+"正则下载");
-        notif.contentIntent = pIntent;
-        manager.notify(notification_id, notif);
-
-        downloadName.add(name);
-        final Message msg=new Message();
-        msg.obj=notif;
-        msg.what=notification_id;
-
-        notification_id++;
 
 
         new Thread() {
             @Override
             public void run() {
+                NotificationManager manager;
+                Notification notif;
+                Intent intent = new Intent(context,MovieActivity.class);
+                PendingIntent pIntent = PendingIntent.getActivity(context, notification_id, intent, 0);
+
+                manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                notif = new Notification();
+                notif.icon = R.mipmap.ink;
+                notif.tickerText = "inankai";
+                //通知栏显示所用到的布局文件
+                notif.contentView = new RemoteViews(getPackageName(), R.layout.notification_view);
+                notif.contentView.setTextViewText(R.id.content_view_text1, name+"正则下载");
+                notif.contentIntent = pIntent;
+                manager.notify(notification_id, notif);
+
+                downloadName.add(name);
+                final Message msg=new Message();
+                msg.obj=notif;
+                msg.what=notification_id;
+
+                notification_id++;
+
+
                 final String url=getRealDownloadUrl((String) view.getTag());
                 final String filename=name+".rmvb";
                 final String dirName="inankai/movie";
@@ -339,7 +342,7 @@ public class MovieDescActivity extends AppCompatActivity {
                 String desc=m2.group(1);
                 desc=desc.replaceAll("&nbsp;"," ");
 
-                infoMap.put(infoMapKey[9], desc+desc);    //之前用这个infoMapKey[i]，结果网站上条目数目不一，有时会超出数组界限
+                infoMap.put(infoMapKey[9], desc);    //之前用这个infoMapKey[i]，结果网站上条目数目不一，有时会超出数组界限
 
                 //下载链接
                 //这个链接还要处理好几次<a onclick="haveclick();hotmovie()" href="joyview://MjAxNlyxvLCufDc0NzB8sbywri5ybXZifDg5MzUyNzc4OXxA" target="_self">下载播放</a>

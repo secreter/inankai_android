@@ -24,7 +24,12 @@
         <activity android:name=".MusicTabActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/title_activity_music"
-            android:launchMode="singleTask" ></activity>
+            android:launchMode="singleTask" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".MusicResultActivity"
             android:launchMode="singleTask" ></activity>
         <activity
@@ -43,8 +48,12 @@
         <activity android:name=".CartoonActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/title_activity_cartoon"
-            android:launchMode="singleTask"></activity>
-        <activity android:name=".CartoonDescActivity"></activity>
+            android:launchMode="singleTask">
+
+        </activity>
+        <activity android:name=".CartoonDescActivity">
+
+        </activity>
         <activity
             android:name=".TvplaerActivity"
             android:configChanges="keyboardHidden|orientation"
@@ -56,11 +65,7 @@
             android:label="@string/title_activity_movie"
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTask" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".MovieDescActivity"

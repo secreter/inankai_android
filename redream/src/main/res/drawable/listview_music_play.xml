@@ -4,11 +4,11 @@
 
     <!-- 默认时的背景图片-->
 
-    <item android:drawable="@color/huibai" />
+    <item android:drawable="@color/colorBlank" />
 
     <!-- 没有焦点时的背景图片-->
 
-    <item android:state_window_focused="false" android:drawable="@color/huibai" />
+    <item android:state_window_focused="false" android:drawable="@color/colorBlank" />
 
     <!-- 非触摸模式下获得焦点并单击时的背景图片-->
 

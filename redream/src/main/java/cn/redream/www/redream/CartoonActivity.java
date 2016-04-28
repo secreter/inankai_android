@@ -57,7 +57,7 @@ public class CartoonActivity extends AppCompatActivity implements TabHost.OnTabC
 
     static final String VIDEO_URL = "http://12club.nankai.edu.cn/programs";
     static final String SEARCH_URL = "http://12club.nankai.edu.cn/search";
-    static final String LOCAL_DIR = "Redream/comic";
+    static final String LOCAL_DIR = "inankai/comic";
     TabHost tabHost;
     String responseCartoon;
     String responseVideo;
@@ -121,7 +121,8 @@ public class CartoonActivity extends AppCompatActivity implements TabHost.OnTabC
         search_mag_icon.setImageResource(R.mipmap.search3);//图标都是用src的
         //将其展开后改变图标才有用
         searchCartoon.setIconifiedByDefault(false);
-
+        //初始时失去焦点
+        searchCartoon.setFocusable(false);
         //设置字体为黑色
         int id = searchCartoon.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
         TextView textView = (TextView) searchCartoon.findViewById(id);
@@ -567,7 +568,9 @@ public class CartoonActivity extends AppCompatActivity implements TabHost.OnTabC
             startActivity(intent);
 
         } else if (id == R.id.movie) {
-            movieTpye();
+//            movieTpye();
+            intent = new Intent(this, MovieActivity.class);
+            startActivity(intent);
         } else if (id == R.id.cartoon) {
 
         } else if (id == R.id.music) {

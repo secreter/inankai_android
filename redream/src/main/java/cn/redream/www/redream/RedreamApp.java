@@ -3,10 +3,17 @@ package cn.redream.www.redream;
 import android.app.Application;
 import android.os.Handler;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by acer on 2016/3/23.
  */
 public class RedreamApp extends Application {
+    //存储正在下载的url，禁止重复下载
+    public List<String> cartoonUrlList=new ArrayList<>();
+    public List<String> movieUrlList=new ArrayList<>();
+    public List<String> musicUrlList=new ArrayList<>();
     //当Activity返回上一个Activity时，会调用onDestroy（）函数，再次进入时会onStrat()函数重新创建MusicTabActivity，如果用MusicTabActivityde
     //curPlayViewPos,就会是-1，被重置
     public int lastPlayViewPos=-1;

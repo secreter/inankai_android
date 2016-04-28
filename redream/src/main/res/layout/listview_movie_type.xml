@@ -3,31 +3,26 @@
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:descendantFocusability="blocksDescendants"
-    android:paddingTop="5dp"
-    android:paddingBottom="5dp"
-    android:paddingLeft="10dp"
+    android:paddingBottom="10dp"
+    android:gravity="center_vertical"
     >
 
-    <cn.redream.www.redream.CircleImageView
-        android:id="@+id/header"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:paddingLeft="10dp"
-        android:layout_gravity="center"
-        />
+
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:id="@+id/textwrap">
         <TextView
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#333"
-            android:textSize="20dp"
-            android:layout_marginTop="2dp"
-            android:paddingLeft="10dp"/>
+            android:textSize="18dp"
+            android:layout_marginTop="5dp"
+            android:textColor="#000"
+            android:paddingLeft="15dp"
+            />
         <TextView
             android:id="@+id/desc"
             android:layout_width="wrap_content"
@@ -35,13 +30,9 @@
             android:textSize="14dp"
             android:textColor="#949090"
             android:layout_marginTop="5dp"
-            android:paddingLeft="10dp"/>
-        <!--<Button-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="play"-->
-            <!--android:focusable="false"-->
-            <!--android:gravity="left"/>-->
+            android:paddingLeft="15dp"
+            />
+
 
 
     </LinearLayout>

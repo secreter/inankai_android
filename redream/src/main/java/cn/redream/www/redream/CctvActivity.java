@@ -159,7 +159,8 @@ public class CctvActivity extends AppCompatActivity
 
 
         } else if (id == R.id.movie) {
-            movieTpye();
+            intent = new Intent(this, MovieActivity.class);
+            startActivity(intent);
         }else if (id == R.id.cartoon) {
             intent = new Intent(this, CartoonActivity.class);
             startActivity(intent);

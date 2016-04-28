@@ -97,15 +97,61 @@
         android:layout_height="match_parent"
         android:fillViewport="true"
         >
-
-        <ListView
-            android:id="@+id/download_list"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/qinghuan"
-            android:layout_marginBottom="10dp">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <ListView
+                android:id="@+id/download_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorBlank"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="1">
+            </ListView>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:descendantFocusability="blocksDescendants"
+                >
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="下载全部"
+                    android:id="@+id/cartoonDownloadAll"
+                    android:onClick="cartoon_download_all"
+                    android:background="#F12100"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginRight="10dp"
+                    android:textSize="16dp"
+                    android:textColor="#ffffff"
+                    />
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="分享"
+                    android:id="@+id/cartoonShare"
+                    android:onClick="cartoon_share"
+                    android:background="#ffffff"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="15dp"
+                    android:textSize="16dp"
+                    android:textColor="#666666"
+                    />
+            </LinearLayout>
 
-        </ListView>
+
+        </LinearLayout>
+
+
+
     </ScrollView>
 
 

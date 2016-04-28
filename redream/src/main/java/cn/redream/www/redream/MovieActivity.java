@@ -27,6 +27,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -70,7 +71,7 @@ public class MovieActivity extends AppCompatActivity
     private String domain="http://222.30.44.37/";
 //    private String domain="http://movie.nku.cn/";
     private ListView movieTypeList;
-    private ListView movieListView;
+    private GridView movieGridView;
     private String movieType;
     private String searchType="name";  //默认搜索片名
     private String searchString;
@@ -456,12 +457,12 @@ public class MovieActivity extends AppCompatActivity
 
                 if (msg.what==0x123){
 
-                    AsyncMovieListViewAdapter asyncMovieListViewAdapter =new AsyncMovieListViewAdapter(context,movieListData);
+                    AsyncMovieGridviewAdapter asyncmovieGridviewAdapter =new AsyncMovieGridviewAdapter(context,movieListData);
 //                    simpleAdapter.setViewBinder(new MyViewBinder());
-                    movieListView.setAdapter(asyncMovieListViewAdapter);
+                    movieGridView.setAdapter(asyncmovieGridviewAdapter);
                     LinearLayout loading= (LinearLayout) findViewById(R.id.loadingAnim);
                     loading.setVisibility(View.GONE);
-                    if (asyncMovieListViewAdapter.getCount()==0){
+                    if (asyncmovieGridviewAdapter.getCount()==0){
                         Toast.makeText(context,"暂时没有搜到相关电影，换个词语试试吧~",Toast.LENGTH_LONG).show();
                     }
 
@@ -483,18 +484,18 @@ public class MovieActivity extends AppCompatActivity
         };
     }
     private void init(){
-        movieListView= (ListView) findViewById(R.id.movieList);
+        movieGridView= (GridView) findViewById(R.id.movieGridview);
         initTabHost();
         initSearchView();
         initTypeList();
         initMovieList(null);
         initLocal();
         handMessage();
-        movieListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        movieGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ListView listView = (ListView) parent;
-                HashMap<String, Object> map = (HashMap<String, Object>) listView.getItemAtPosition(position);
+                GridView gridView = (GridView) parent;
+                HashMap<String, Object> map = (HashMap<String, Object>) gridView.getItemAtPosition(position);
                 Intent intent = new Intent();
                 intent.setClass(context, MovieDescActivity.class);
                 intent.putExtra("posterimgId", map.get("posterimgId").toString());

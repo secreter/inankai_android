@@ -184,6 +184,8 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.movie) {
 //            movieTpye();
+            intent = new Intent(this, MovieActivity.class);
+            startActivity(intent);
         } else if (id == R.id.cartoon) {
             intent = new Intent(this, CartoonActivity.class);
             startActivity(intent);
@@ -218,6 +220,7 @@ public class MainActivity extends AppCompatActivity
      * 菜单、返回键响应
      */
 
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         // TODO Auto-generated method stub
@@ -227,6 +230,7 @@ public class MainActivity extends AppCompatActivity
         }
         return false;
     }
+
     /**
      * 双击退出函数
      */
