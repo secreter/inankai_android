@@ -50,14 +50,14 @@
                             <Spinner
                                 android:id="@+id/movieSpinner"
                                 android:paddingLeft="10dp"
+                                android:paddingTop="10dp"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
                                 >
                             </Spinner>
 
                             <SearchView
-                                android:layout_width="wrap_content"
+                                android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
                                 android:id="@+id/searchMovie"
                                 android:imeOptions="actionSearch"
@@ -65,7 +65,9 @@
                                 android:background="@drawable/search_view_shape"
                                 android:queryHint="搜索影片"
                                 android:padding="0dp"
-                                android:layout_column="1"
+                                android:layout_span="2"
+                                android:layout_weight="1"
+                                android:layout_marginRight="0dp"
                                 />
                         </TableRow>
                     </TableLayout>
@@ -154,7 +156,11 @@
                         <ListView
                             android:id="@+id/localList"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"></ListView>
+                            android:layout_height="wrap_content"
+                            android:background="#ffffff"
+                            android:listSelector="@drawable/listitem_selector"
+                            android:divider="#e6e6e6"
+                            android:dividerHeight="1px"></ListView>
                     </ScrollView>
 
 

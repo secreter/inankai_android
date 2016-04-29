@@ -21,7 +21,7 @@ public class MusicService {
     public static final int IS_PAUSE=2;
     public static final int NOT=0;
     private static final File MUSIC_PATH = new File(Environment
-            .getExternalStorageDirectory()+"/Redream/music");// 找到music存放的路径。
+            .getExternalStorageDirectory()+"/inankai/music");// 找到music存放的路径。
     public List<String> musicList;// 存放找到的所有mp3的绝对路径。
     public MediaPlayer player; // 定义多媒体对象
     public int songNum=-1; // 当前播放的歌曲在List中的下标

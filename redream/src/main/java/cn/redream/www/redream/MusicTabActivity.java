@@ -104,6 +104,8 @@ public class MusicTabActivity extends AppCompatActivity implements TabHost.OnTab
     private MenuItem thisActMenuItem;//
     private NavigationView navigationView;
 
+    final String dirName="inankai/music";
+
 
 
     @Override
@@ -196,14 +198,28 @@ public class MusicTabActivity extends AppCompatActivity implements TabHost.OnTab
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //传递参数
                 ListView listView = (ListView) parent;
-                HashMap<String, Object> map = (HashMap<String, Object>) listView.getItemAtPosition(position);
-//打开下一个activity
-                Intent intent = new Intent();
-//CurActivity 是当前activity, NextActivity 是要跳转至的activity
-                intent.setClass(context, MusicResultActivity.class);
-                intent.putExtra("artist", map.get("personName").toString());
-                intent.putExtra("header", map.get("header").toString());
-                startActivity(intent);
+                final HashMap<String, Object> map = (HashMap<String, Object>) listView.getItemAtPosition(position);
+                //打开下一个activity
+//                Intent intent = new Intent();
+//                //CurActivity 是当前activity, NextActivity 是要跳转至的activity
+//                intent.setClass(context, MusicResultActivity.class);
+//                intent.putExtra("artist", map.get("personName").toString());
+//                intent.putExtra("header", map.get("header").toString());
+//                startActivity(intent);
+
+                //选中第一个tab
+                tabHost.setCurrentTab(1);
+                LinearLayout loading= (LinearLayout) findViewById(R.id.loadingAnim);
+                loading.setVisibility(View.VISIBLE);
+                new Thread() {
+                    @Override
+                    public void run() {
+                        String query_gb = strToGb2312(map.get("personName").toString());
+                        response = GetPostUtil.sendPostGbk("http://music.nankai.edu.cn/main.php?iframeID=layer_d_3_I", "searchtype=artist&searchstring=" + query_gb);
+                        //发送消息通知ui线程更新UI组件
+                        handler.sendEmptyMessage(0x126);
+                    }
+                }.start();
             }
         });
 
@@ -212,12 +228,37 @@ public class MusicTabActivity extends AppCompatActivity implements TabHost.OnTab
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //传递参数
                 ListView listView= (ListView) parent;
+                MusicDownloadAdapter adapter = (MusicDownloadAdapter) ((ListView) parent).getAdapter();
+                ImageView imageView = (ImageView) view.findViewById(R.id.downloadIcon);
+                imageView.setImageResource(R.mipmap.icon_download_active);
+
                 HashMap<String, Object> map = (HashMap<String, Object>) listView.getItemAtPosition(position);
                 if (redreamApp.musicUrlList.contains(map.get("id"))){
                     Toast.makeText(MusicTabActivity.this, "已经下载", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                adapter.addDownloadId((String) map.get("id"));
                 redreamApp.musicUrlList.add((String) map.get("id"));
+                Toast.makeText(getApplicationContext(), map.get("singName")+"正在后台下载，保存在inankai/music", Toast.LENGTH_LONG).show();
+                final String url="http://music.nankai.edu.cn/download.php?id="+map.get("id");
+                final String name=map.get("artist")+"___"+map.get("singName")+"___"+map.get("id")+".mp3";
+
+                new Thread() {
+                    @Override
+                    public void run() {
+
+                        downloadMp3(url, name, dirName);
+                        //貌似线程里不可以用更新界面的东西，老出错
+//                        Toast.makeText(getApplicationContext(), map.get("singName")+"正在下载", Toast.LENGTH_SHORT).show();
+                        Message msg=new Message();
+                        msg.obj=name;
+                        msg.what=0x125;
+                        handler.sendMessage(msg);
+                    }
+
+                }.start();
+
+
 //                Intent intent = new Intent();
 //                Uri uri = Uri.parse("http://music.nankai.edu.cn/download.php?id="+map.get("id"));
 //                intent.setDataAndType(uri, "audio/x-mpeg");
@@ -293,7 +334,6 @@ public class MusicTabActivity extends AppCompatActivity implements TabHost.OnTab
 //        localList.setOnFocusChangeListener(new MyOnFocusChangeListener());
     }
 
-
       Handler handler=new Handler(){
          //注意，桃源网站使用的是gb2312编码，所以提交、得到的文字都要转编码
         @Override
@@ -310,6 +350,9 @@ public class MusicTabActivity extends AppCompatActivity implements TabHost.OnTab
                     listItem.put("desc","ink media");
                     listItems.add(listItem);
                 }
+                if (i==0){
+                    Toast.makeText(context,"暂时没有搜到结果~换歌手个试试吧~",Toast.LENGTH_LONG).show();
+                }
                 SimpleAdapter simpleAdapter=new SimpleAdapter(context,listItems,R.layout.listview,new String[]{"header","personName","desc"},new int[]{R.id.header,R.id.name,R.id.desc});
                 artistList.setAdapter(simpleAdapter);
             }
@@ -322,13 +365,13 @@ public class MusicTabActivity extends AppCompatActivity implements TabHost.OnTab
                     System.out.println(m.group(2));
                     System.out.println(m.group(3));
                     Map<String,Object> listItem=new HashMap<String,Object>();
-                    listItem.put("singImg",singImgsId[i++%8]);
+                    listItem.put("singImg",R.mipmap.songs);
                     listItem.put("singName",m.group(3));
                     listItem.put("artist",m.group(1));
                     listItem.put("id",m.group(2));
                     listItems.add(listItem);
                 }
-                SimpleAdapter simpleAdapter=new SimpleAdapter(context,listItems,R.layout.listview_song,new String[]{"singImg","singName","artist"},new int[]{R.id.header,R.id.name,R.id.desc});
+                MusicDownloadAdapter simpleAdapter=new MusicDownloadAdapter(context,listItems);
                 titleList.setAdapter(simpleAdapter);
                 if (i==0){
                     Toast.makeText(context,"暂时没有搜到结果~换个试试吧~",Toast.LENGTH_LONG).show();
@@ -350,6 +393,31 @@ public class MusicTabActivity extends AppCompatActivity implements TabHost.OnTab
                     localList.performItemClick(localList.getChildAt(redreamApp.curPlayViewPos), redreamApp.curPlayViewPos, localList.getItemIdAtPosition(redreamApp.curPlayViewPos));
 
                 }
+            }
+            if (msg.what==0x126){
+
+                Pattern p= Pattern.compile("<font color=#666666>(.+)</font>[\\s\\S]+?<a href=\"waitorder.+id=(\\d+).+><font color=green>(.+)</font></a>");
+                Matcher m=p.matcher(response);
+                int i=0;
+                while(m.find()){
+                    i++;
+                    System.out.println(m.group(1));
+                    System.out.println(m.group(2));
+                    System.out.println(m.group(3));
+                    Map<String,Object> listItem=new HashMap<String,Object>();
+                    listItem.put("singImg",R.mipmap.songs);
+                    listItem.put("singName",m.group(3));
+                    listItem.put("artist",m.group(1));
+                    listItem.put("id",m.group(2));
+                    listItems.add(listItem);
+                }
+                MusicDownloadAdapter simpleAdapter=new MusicDownloadAdapter(context,listItems);
+                titleList.setAdapter(simpleAdapter);
+                if (i==0){
+                    Toast.makeText(context,"暂时没有搜到结果~换个试试吧~",Toast.LENGTH_LONG).show();
+                }
+                LinearLayout loading= (LinearLayout) findViewById(R.id.loadingAnim);
+                loading.setVisibility(View.GONE);
             }
             if (msg.what==MusicService.PLAY_NEXT){
                 Toast.makeText(context,"播放下一首！",Toast.LENGTH_SHORT).show();
@@ -480,7 +548,9 @@ public class MusicTabActivity extends AppCompatActivity implements TabHost.OnTab
             listItem.put("id",singId[i]);
             listItems.add(listItem);
         }
-        SimpleAdapter simpleAdapter=new SimpleAdapter(this,listItems,R.layout.listview_song,new String[]{"singImg","singName","artist"},new int[]{R.id.header,R.id.name,R.id.desc});
+//        SimpleAdapter simpleAdapter=new SimpleAdapter(this,listItems,R.layout.listview_song,new String[]{"singImg","singName","artist"},new int[]{R.id.header,R.id.name,R.id.desc});
+//        titleList.setAdapter(simpleAdapter);
+        MusicDownloadAdapter simpleAdapter=new MusicDownloadAdapter(this,listItems);
         titleList.setAdapter(simpleAdapter);
     }
     private void initLocal(){
@@ -582,7 +652,7 @@ public class MusicTabActivity extends AppCompatActivity implements TabHost.OnTab
         int imgId;
         final String url="http://music.nankai.edu.cn/download.php?id="+map.get("id");
         final String name=map.get("artist")+"___"+map.get("singName")+"___"+map.get("id")+".mp3";
-        final String dirName="inankai/music";
+
         String title=map.get("singName").toString()+" | inankai media";
         String description="我正在听南开内网音乐哦~";
 
@@ -607,16 +677,15 @@ public class MusicTabActivity extends AppCompatActivity implements TabHost.OnTab
 
                 break;
             case 11:
-                imgId=Integer.parseInt(map.get("singImg").toString());
-                share.sendUrlAudio(url,true,title,description,imgId);
+//                imgId=Integer.parseInt(map.get("singImg").toString());
+                share.sendUrlAudio(url,true,title,description,R.mipmap.ink);
                 break;
             case 12:
-                imgId=Integer.parseInt(map.get("singImg").toString());
-                share.sendUrlAudio(url,false,title,description,imgId);
+//                imgId=Integer.parseInt(map.get("singImg").toString());
+                share.sendUrlAudio(url,false,title,description,R.mipmap.ink);
                 break;
             case 20:
                 String filePath=Environment.getExternalStorageDirectory()+"/"+LOCAL_DIR+"/"+name;
-                Log.v("pcy",name);
                 int return_code=deleteFile(filePath,player.getSongNum());
                 switch (return_code){
                     case -2:
@@ -637,10 +706,10 @@ public class MusicTabActivity extends AppCompatActivity implements TabHost.OnTab
                         localList.performItemClick(localList.getChildAt(redreamApp.curPlayViewPos), redreamApp.curPlayViewPos, localList.getItemIdAtPosition(redreamApp.curPlayViewPos));
                         break;
                     case 0:
-                        Toast.makeText(this,title+"删除失败，不能删除正在播放的歌曲",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this,map.get("singName").toString()+"删除失败，不能删除正在播放的歌曲",Toast.LENGTH_SHORT).show();
                         break;
                     case 1:
-                        Toast.makeText(this,title+"删除成功",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this,map.get("singName").toString()+"删除成功",Toast.LENGTH_SHORT).show();
                         initLocal();
                         player.flashPlayList();  //播放列表总数变了
                         player.reduceSongNum();

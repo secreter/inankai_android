@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
@@ -47,6 +48,7 @@ public class CartoonDescActivity extends AppCompatActivity {
     public static final String FTP_DOWN_FAIL = "ftp文件下载失败";
     Context context=this;
     RedreamApp redreamApp;
+    WXShareUtil share;
     private ArrayList<HashMap<String,Object>> listMap;
     private HashMap<String,Object> map;
     private ImageView imageView;
@@ -83,6 +85,7 @@ public class CartoonDescActivity extends AppCompatActivity {
         downloadCountTv= (TextView) findViewById(R.id.downloadCount);
         listview= (ListView) findViewById(R.id.download_list);
         redreamApp = ((RedreamApp)getApplicationContext());   //用他的cartoonUrlList来存储正在下载的cartoon，不让再次点击覆盖下载
+        share = new WXShareUtil(this);
 
 
         descLink=getIntent().getStringExtra("descLink");
@@ -108,7 +111,7 @@ public class CartoonDescActivity extends AppCompatActivity {
                     Toast.makeText(context, listItem.get("name") + map.get("episode").toString()+"已在下载！", LENGTH_SHORT).show();
                     return;
                 }
-//                Toast.makeText(context, domain + map.get("downloadLink").toString(), LENGTH_SHORT).show();
+                Toast.makeText(context, domain + listItem.get("name"), LENGTH_SHORT).show();
                 redreamApp.cartoonUrlList.add(map.get("downloadLink").toString());  //加入正在下载的list
                 final String filename = listItem.get("name") + map.get("episode").toString() + ".MP4";
                 final String localPath = Environment.getExternalStorageDirectory() + "/inankai/comic";
@@ -117,7 +120,7 @@ public class CartoonDescActivity extends AppCompatActivity {
                     fileSizeStr="150";
                 }
                 final Float fileSize=Float.parseFloat(fileSizeStr.substring(0, fileSizeStr.length() - 3))*1048576;
-                Toast.makeText(CartoonDescActivity.this, fileSize+"b", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(CartoonDescActivity.this, fileSize+"b", Toast.LENGTH_SHORT).show();
 
 
 
@@ -285,6 +288,39 @@ public class CartoonDescActivity extends AppCompatActivity {
             }
         }.start();
     }
+
+    public void cartoon_share_pyq(View view){
+        String url = "http://www.redream.cn/testpaper.php";
+        url= (String) listItem.get("descLink");
+        String title = listItem.get("name").toString()+"| ink media";
+        String description = "我正在看南开内网电影哦~你也来看看吧!";
+        Bitmap bmp;
+        bmp = scaleBitmap(bitmap, 50, 80);
+        share.sendUrl(url, true, title, description, bmp);
+    }
+    public void cartoon_share_friend(View view){
+        String url = "http://www.redream.cn/testpaper.php";
+        url= (String) listItem.get("descLink");
+        String title =listItem.get("name").toString()+"| ink media";
+        String description = "我正在看南开内网电影哦~你也来看看吧!";
+        Bitmap bmp;
+        bmp = scaleBitmap(bitmap, 50, 80);
+        share.sendUrl(url, false, title, description, bmp);
+    }
+    public synchronized static Bitmap scaleBitmap(Bitmap bitmap, float w, float h) {
+        if (bitmap == null) {//判断Bitmap
+            return null;
+        }
+        int width = bitmap.getWidth(); //获取宽度
+        int height = bitmap.getHeight();//获取高度
+        Matrix matrix = new Matrix(); //实例化一个Martrix对象
+        float scaleW = w / (float) width;
+        float scaleH = h / (float) height;
+        matrix.postScale(scaleW, scaleH);
+        bitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
+        return bitmap;
+    }
+
     //获取网络图片资源，返回类型是Bitmap，用于设置在ListView中
     public Bitmap getBitmap(String httpUrl,int reqWidth,int reqHeight){
         Bitmap bmp = null;
