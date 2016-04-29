@@ -37,7 +37,7 @@ public class MovieLayout extends LinearLayout {
         //高度和宽度一样
 
         widthMeasureSpec = MeasureSpec.makeMeasureSpec(childWidthSize, MeasureSpec.EXACTLY);
-        heightMeasureSpec= MeasureSpec.makeMeasureSpec((int) (childWidthSize*1.6), MeasureSpec.EXACTLY);
+        heightMeasureSpec= MeasureSpec.makeMeasureSpec((int) (childWidthSize*2.0), MeasureSpec.EXACTLY);
                 super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 }
