@@ -57,6 +57,7 @@ public class MovieDescActivity extends AppCompatActivity {
     public static final String SEARCH_URL="http://222.30.44.37/filmclass.php?action=search";
     public static final String CATEGORY_URL="http://222.30.44.37/filmclass.php?page=0&class=type&content=";
     private Context context=this;
+    RedreamApp redreamApp;
     private String response;
     private String responseRealUrl;
     private Map<String,String> infoMap=new HashMap<String,String>();
@@ -180,7 +181,7 @@ public class MovieDescActivity extends AppCompatActivity {
     }
 
     private void init(){
-
+        redreamApp = ((RedreamApp)getApplicationContext());   //用他的movieUrlList来存储正在下载的cartoon，不让再次点击覆盖下载
         moviePosterView= (ImageView) findViewById(R.id.moviePoster);
         nameView= (TextView) findViewById(R.id.movieName);
         directorView= (TextView) findViewById(R.id.director);
@@ -262,9 +263,15 @@ public class MovieDescActivity extends AppCompatActivity {
         final String name;
         Button btn= (Button) view;
         name= movieName+(String) btn.getText().subSequence(2,btn.getText().length());
+        if (redreamApp.movieUrlList.contains(name)){
+            Toast.makeText(getApplicationContext(), name+"已经下载", Toast.LENGTH_LONG).show();
+            return;
+        }
+        redreamApp.movieUrlList.add(name);
         Toast.makeText(getApplicationContext(), name+"正在后台下载，保存在inankai/movie", Toast.LENGTH_LONG).show();
         Log.v("pcy", (String) view.getTag());
 //        initProgress(name);
+
 
 
 

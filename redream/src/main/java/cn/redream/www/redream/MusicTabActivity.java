@@ -213,11 +213,16 @@ public class MusicTabActivity extends AppCompatActivity implements TabHost.OnTab
                 //传递参数
                 ListView listView= (ListView) parent;
                 HashMap<String, Object> map = (HashMap<String, Object>) listView.getItemAtPosition(position);
-                Intent intent = new Intent();
-                Uri uri = Uri.parse("http://music.nankai.edu.cn/download.php?id="+map.get("id"));
-                intent.setDataAndType(uri, "audio/x-mpeg");
-                intent.setAction(Intent.ACTION_VIEW);
-                startActivity(intent);
+                if (redreamApp.musicUrlList.contains(map.get("id"))){
+                    Toast.makeText(MusicTabActivity.this, "已经下载", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                redreamApp.musicUrlList.add((String) map.get("id"));
+//                Intent intent = new Intent();
+//                Uri uri = Uri.parse("http://music.nankai.edu.cn/download.php?id="+map.get("id"));
+//                intent.setDataAndType(uri, "audio/x-mpeg");
+//                intent.setAction(Intent.ACTION_VIEW);
+//                startActivity(intent);
 
 //                MediaPlayer mediaPlayer = new MediaPlayer();
 //                mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);// 设置媒体流类型
