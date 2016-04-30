@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="@drawable/layoutborder">
+    android:background="@drawable/layoutborder"
+    android:elevation="5dp">
     <cn.redream.www.redream.MovieLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
