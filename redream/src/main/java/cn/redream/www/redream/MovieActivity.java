@@ -135,7 +135,7 @@ public class MovieActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.movie, menu);
+        getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
@@ -271,7 +271,7 @@ public class MovieActivity extends AppCompatActivity
         adapterType = ArrayAdapter.createFromResource(this, R.array.search_type, android.R.layout.simple_spinner_item);
 
         //设置下拉列表的风格
-        adapterType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapterType.setDropDownViewResource(R.layout.drop_down_item);
 
         //将adapter2 添加到spinner中
         searchSpinner.setAdapter(adapterType);

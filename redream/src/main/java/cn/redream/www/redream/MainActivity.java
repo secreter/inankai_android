@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            exitBy2Click(); //调用双击退出函数
         }
     }
 
@@ -221,15 +221,6 @@ public class MainActivity extends AppCompatActivity
      */
 
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        // TODO Auto-generated method stub
-        if(keyCode == KeyEvent.KEYCODE_BACK)
-        {
-            exitBy2Click(); //调用双击退出函数
-        }
-        return false;
-    }
 
     /**
      * 双击退出函数

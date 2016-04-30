@@ -158,7 +158,7 @@ public class CartoonDescActivity extends AppCompatActivity {
                         notif.tickerText = "inankai";
                         //通知栏显示所用到的布局文件
                         notif.contentView = new RemoteViews(getPackageName(), R.layout.notification_view);
-                        notif.contentView.setTextViewText(R.id.content_view_text1, listItem.get("name") + map.get("episode").toString() + "正则下载");
+                        notif.contentView.setTextViewText(R.id.content_view_text1, listItem.get("name") + map.get("episode").toString() + "正在下载");
                         notif.contentIntent = pIntent;
                         manager.notify(notification_id, notif);
 

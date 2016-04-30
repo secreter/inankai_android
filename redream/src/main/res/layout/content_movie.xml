@@ -87,8 +87,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/tab2"
-                    android:orientation="vertical"
-                    android:background="@color/danhui">
+                    android:orientation="vertical">
 
 
                     <LinearLayout
@@ -131,13 +130,11 @@
                             android:id="@+id/movieGridview"
                             android:numColumns="auto_fit"
                             android:columnWidth="100dp"
-
                             android:horizontalSpacing="10dp"
                             android:verticalSpacing="10dp"
                             android:gravity="center"
                             android:stretchMode="columnWidth"
                             android:listSelector="@drawable/grid_view_item_selector"
-                            android:background="@color/danhui"
                             >
                         </GridView>
                     </ScrollView>
