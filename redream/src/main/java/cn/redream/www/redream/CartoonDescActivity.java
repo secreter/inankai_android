@@ -111,7 +111,7 @@ public class CartoonDescActivity extends AppCompatActivity {
                     Toast.makeText(context, listItem.get("name") + map.get("episode").toString()+"已在下载！", LENGTH_SHORT).show();
                     return;
                 }
-                Toast.makeText(context, domain + listItem.get("name"), LENGTH_SHORT).show();
+//                Toast.makeText(context, domain + listItem.get("name"), LENGTH_SHORT).show();
                 redreamApp.cartoonUrlList.add(map.get("downloadLink").toString());  //加入正在下载的list
                 final String filename = listItem.get("name") + map.get("episode").toString() + ".MP4";
                 final String localPath = Environment.getExternalStorageDirectory() + "/inankai/comic";
@@ -366,8 +366,8 @@ public class CartoonDescActivity extends AppCompatActivity {
                     Toast.makeText(context,"正在下载",Toast.LENGTH_LONG).show();
                 }
                 if (msg.what==0x125){
-                    System.out.println(25);
                     Toast.makeText(context,"下载完成",Toast.LENGTH_LONG).show();
+
                 }
                 for (int i = 0; i < notification_id; i++) {
                     if (msg.what==i){

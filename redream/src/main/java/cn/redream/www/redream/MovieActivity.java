@@ -210,6 +210,7 @@ public class MovieActivity extends AppCompatActivity
         if ("tab1".equals(tabId)) {
         }
         if ("tab2".equals(tabId)) {
+            initLocal();
         }
         tabHost.setCurrentTabByTag(tabId);
         updateTab(tabHost);
@@ -281,6 +282,9 @@ public class MovieActivity extends AppCompatActivity
         //设置默认值
         searchSpinner.setVisibility(View.VISIBLE);
 
+        //添加事件Spinner事件监听
+        searchSpinner.setOnItemSelectedListener(new SpinnerXMLSelectedListener());
+
 
 
         searchMovie= (SearchView) findViewById(R.id.searchMovie);
@@ -299,6 +303,26 @@ public class MovieActivity extends AppCompatActivity
         textView.setTextColor(Color.BLACK);
         textView.setTextSize(14);
         textView.setHintTextColor(getResources().getColor(R.color.grey));
+
+        searchMovie.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                try {
+                    searchString=URLEncoder.encode(query, "gbk");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                //选中第一个tab
+                tabHost.setCurrentTab(1);
+                initMovieList(null);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
     }
     //使用XML形式操作
     class SpinnerXMLSelectedListener implements AdapterView.OnItemSelectedListener {
@@ -315,9 +339,7 @@ public class MovieActivity extends AppCompatActivity
                     searchType="actor";
                     break;
             }
-//            if(searchTypeStr=="片名")searchTypeStr="name";
-//            if(searchTypeStr=="导演")searchTypeStr="director";
-//            if(searchTypeStr=="主演")searchTypeStr="actor";
+
         }
 
         public void onNothingSelected(AdapterView<?> arg0) {
@@ -393,9 +415,9 @@ public class MovieActivity extends AppCompatActivity
                         listItem.put("link", m.group(2));
                         movieListData.add(listItem);
                     }
-                }else if (intent.getStringExtra("searchstring")!=null){
+                }else if (searchString!=null){
                     url=SEARCH_URL;
-                    params="searchtype="+intent.getStringExtra("searchtype")+"&searchstring="+intent.getStringExtra("searchstring");
+                    params="searchtype="+searchType+"&searchstring="+searchString;
                     response = GetPostUtil.sendPostGbk(url,params);
 
                     p = Pattern.compile("<a href=\"javascript:layer1On\\('(\\d+)'\\)\"><img border=\"0\" src=\"(.*)\" width=\"86\" height=\"121\"></a>");
@@ -406,7 +428,7 @@ public class MovieActivity extends AppCompatActivity
                         final Map<String, Object> listItem = new HashMap<String, Object>();
                         listItem.put("posterimgId", m.group(1));
                         try {
-                            listItem.put("movieType", URLDecoder.decode(intent.getStringExtra("searchstring"), "gbk"));
+                            listItem.put("movieType", URLDecoder.decode(searchString, "gbk"));
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -540,7 +562,7 @@ public class MovieActivity extends AppCompatActivity
                 HashMap<String, Object> map = (HashMap<String, Object>) listView.getItemAtPosition(position);
 
                 Intent intent = new Intent(Intent.ACTION_VIEW);
-                String path = Environment.getExternalStorageDirectory() + "/" + LOCAL_DIR + "/" + map.get("fileName");
+                String path = Environment.getExternalStorageDirectory() + "/" + LOCAL_DIR + "/" + map.get("name");
                 intent.setDataAndType(Uri.fromFile(new File(path)), "video/*");
                 startActivity(intent);
             }

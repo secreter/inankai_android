@@ -109,7 +109,7 @@ public class CartoonActivity extends AppCompatActivity implements TabHost.OnTabC
                 HashMap<String, Object> map = (HashMap<String, Object>) listView.getItemAtPosition(position);
 
                 Intent intent = new Intent(Intent.ACTION_VIEW);
-                String path = Environment.getExternalStorageDirectory() + "/" + LOCAL_DIR + "/" + map.get("fileName");
+                String path = Environment.getExternalStorageDirectory() + "/" + LOCAL_DIR + "/" + map.get("name");
                 intent.setDataAndType(Uri.fromFile(new File(path)), "video/*");
                 startActivity(intent);
             }
@@ -200,6 +200,7 @@ public class CartoonActivity extends AppCompatActivity implements TabHost.OnTabC
         if ("tab1".equals(tabId)) {
         }
         if ("tab2".equals(tabId)) {
+            initLocal();
         }
         tabHost.setCurrentTabByTag(tabId);
         updateTab(tabHost);
@@ -218,7 +219,7 @@ public class CartoonActivity extends AppCompatActivity implements TabHost.OnTabC
         //添加第一个标签页
         tabHost.addTab(tab1);
         TabHost.TabSpec tab2 = tabHost.newTabSpec("tab2")
-                .setIndicator("剧集") //创建标题
+                .setIndicator("视频") //创建标题
                 .setContent(R.id.tab2);//创建内容
         //添加第一个标签页
         tabHost.addTab(tab2);
@@ -356,8 +357,9 @@ public class CartoonActivity extends AppCompatActivity implements TabHost.OnTabC
         //注意，这里targetView是linearlayout，要getParent()才是ListView
         ListView listView = (ListView) menuInfo.targetView.getParent();
         final HashMap<String, Object> map = (HashMap<String, Object>) listView.getItemAtPosition(index);
-        final String url = "http://www.redream.cn/testpaper.php";
-        String title = map.get("name").toString();
+//        final String url = "http://www.redream.cn/testpaper.php";
+        final String url =map.get("descLink").toString() ;
+        String title = map.get("name").toString()+" | ink media";
         String description = "我正在看南开内网电影哦~你也来看看吧!";
         ImageView view;
         Bitmap bmp;

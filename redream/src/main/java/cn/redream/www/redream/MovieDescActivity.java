@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
@@ -319,10 +320,12 @@ public class MovieDescActivity extends AppCompatActivity {
         new Thread() {
             @Override
             public void run() {
-                final String url=getRealDownloadUrl((String) view.getTag());
-                String title=movieName;
-                String description="我正用inankai在看南开内网电影哦~";
-                share.sendUrlAudio(url, true, title, description, R.mipmap.movie_share);
+//                final String url=getRealDownloadUrl((String) view.getTag());
+                final String url=MOVIE_INFO_URL+"?id="+posterimgId;
+                String title=movieName+" | ink media";
+                String description="ink media看南开内网电影,免流量哦~";
+
+                share.sendUrl(url, true, title, description, BitmapFactory.decodeResource(getResources(), R.mipmap.ink));
                 handler.sendEmptyMessage(0x127);
             }
 
