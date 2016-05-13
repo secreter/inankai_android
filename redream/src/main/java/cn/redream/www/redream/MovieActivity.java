@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.system.ErrnoException;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Display;
@@ -41,7 +42,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -61,7 +64,7 @@ public class MovieActivity extends AppCompatActivity
     public static final String GET_IP_URL_AFTER="&getnum=2&d_from=8&d_to=8&port=8080";
     public static final String SEARCH_URL="http://222.30.44.37/filmclass.php?action=search";
     public static final String CATEGORY_URL="http://222.30.44.37/filmclass.php";
-    private static final int MSG_UPDATE_POSTER =0x130 ;
+    private static final int MSG_NET_ERROR =0x140 ;
     static final String LOCAL_DIR="inankai/movie";
     String response;
     String typeNumResponse;
@@ -146,8 +149,8 @@ public class MovieActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        String title = "ipv6电视、光影传奇、十二社区、桃源音乐，在南开用inankai就够了，不走流量哦~";
-        String desc = "一款南开必备神器，墙裂推荐！";
+        String title = "ink media | 不花流量的影音神器";
+        String desc = "电视电影动漫音乐，畅享无流量！南开人，你值得拥有。";
         String url = "http://inankai.cn";
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ink);
 
@@ -191,8 +194,8 @@ public class MovieActivity extends AppCompatActivity
             intent = new Intent(this, TreeholeActivity.class);
             startActivity(intent);
         }else if (id == R.id.nav_share) {
-            String title = "ipv6电视、光影传奇、十二社区、桃源音乐，在南开用inankai就够了，不走流量哦~";
-            String desc = "一款南开必备神器，墙裂推荐！";
+            String title = "ink media | 不花流量的影音神器";
+            String desc = "电视电影动漫音乐，畅享无流量！南开人，你值得拥有。";
             String url = "http://inankai.cn";
             Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ink);
             share.sendUrl(url, true, title, desc, bitmap);
@@ -353,19 +356,31 @@ public class MovieActivity extends AppCompatActivity
             @Override
             public void run() {
                 String url = HOME_PAGE_URL;
-                typeNumResponse = GetPostUtil.sendGetGbk(url, null);
-                //这个有title
-                Pattern p = Pattern.compile("<font color=#6a6969>\\((\\d+)\\)</font>");
-                final Matcher m = p.matcher(typeNumResponse);
-                //只要“分类”里的数字
-                for (int i = 0; i < 18; i++) {
-                    m.find();
-                    typeNum[i]=m.group(1);
-                }
-                typeNum[18]="24";
+                try {
+                    typeNumResponse = GetPostUtil.sendGetGbk(url, null);
+                    //这个有title
+                    Pattern p = Pattern.compile("<font color=#6a6969>\\((\\d+)\\)</font>");
+                    final Matcher m = p.matcher(typeNumResponse);
+                    //只要“分类”里的数字
+                    for (int i = 0; i < 18; i++) {
+                        m.find();
+                        typeNum[i]=m.group(1);
+                    }
+                    typeNum[18]="24";
 
-                //发送消息通知ui线程更新UI组件
-                handler.sendEmptyMessage(0x124);
+                    //发送消息通知ui线程更新UI组件
+                    handler.sendEmptyMessage(0x124);
+
+                } catch (MalformedURLException e) {
+                    //网络错误
+                    handler.sendEmptyMessage(MSG_NET_ERROR);
+                    e.printStackTrace();
+                    return;
+                } catch (IOException e) {
+                    handler.sendEmptyMessage(MSG_NET_ERROR);
+                    e.printStackTrace();
+                }
+
             }
 
         }.start();
@@ -391,82 +406,112 @@ public class MovieActivity extends AppCompatActivity
             public void run() {
                 String url;
                 String params;
-                Intent intent=getIntent();
                 Pattern p;
                 int i = 0;
+                boolean isNetError=true;
                 if (movieType!=null){
                     //按类型
                     url=CATEGORY_URL;
                     params="page=0&class=type&content="+movieType;
-                    response = GetPostUtil.sendGetGbk(url,params);
-
-                    p = Pattern.compile("<a href=\"javascript:layer1On\\('(\\d+)'\\)\"><img border=\"0\" src=\"(.*)\" width=\"86\" height=\"121\"></a>");
-                    final Matcher m = p.matcher(response);
-                    while (m.find()) {
-                        System.out.println(domain + m.group(1));
-                        System.out.println(m.group(1));
-                        final Map<String, Object> listItem = new HashMap<String, Object>();
-                        listItem.put("posterimgId", m.group(1));
-                        try {
-                            listItem.put("movieType", URLDecoder.decode(movieType,"gbk"));
-                        } catch (UnsupportedEncodingException e) {
-                            e.printStackTrace();
+                    try {
+                        response = GetPostUtil.sendGetGbk(url,params);
+                        p = Pattern.compile("<a href=\"javascript:layer1On\\('(\\d+)'\\)\"><img border=\"0\" src=\"(.*)\" width=\"86\" height=\"121\"></a>");
+                        final Matcher m = p.matcher(response);
+                        while (m.find()) {
+                            System.out.println(domain + m.group(1));
+                            System.out.println(m.group(1));
+                            final Map<String, Object> listItem = new HashMap<String, Object>();
+                            listItem.put("posterimgId", m.group(1));
+                            try {
+                                listItem.put("movieType", URLDecoder.decode(movieType,"gbk"));
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
+                            listItem.put("link", m.group(2));
+                            movieListData.add(listItem);
                         }
-                        listItem.put("link", m.group(2));
-                        movieListData.add(listItem);
+                        isNetError=false;
+                    } catch (MalformedURLException e) {
+                        //网络错误
+                        handler.sendEmptyMessage(MSG_NET_ERROR);
+                        e.printStackTrace();
+                        return;
+                    } catch (IOException e) {
+                        handler.sendEmptyMessage(MSG_NET_ERROR);
+                        e.printStackTrace();
                     }
+
+
                 }else if (searchString!=null){
                     url=SEARCH_URL;
                     params="searchtype="+searchType+"&searchstring="+searchString;
-                    response = GetPostUtil.sendPostGbk(url,params);
-
-                    p = Pattern.compile("<a href=\"javascript:layer1On\\('(\\d+)'\\)\"><img border=\"0\" src=\"(.*)\" width=\"86\" height=\"121\"></a>");
-                    final Matcher m = p.matcher(response);
-                    while (m.find()) {
-                        System.out.println(domain + m.group(1));
-                        System.out.println(m.group(1));
-                        final Map<String, Object> listItem = new HashMap<String, Object>();
-                        listItem.put("posterimgId", m.group(1));
-                        try {
-                            listItem.put("movieType", URLDecoder.decode(searchString, "gbk"));
-                        } catch (UnsupportedEncodingException e) {
-                            e.printStackTrace();
+                    try {
+                        response = GetPostUtil.sendPostGbk(url,params);
+                        p = Pattern.compile("<a href=\"javascript:layer1On\\('(\\d+)'\\)\"><img border=\"0\" src=\"(.*)\" width=\"86\" height=\"121\"></a>");
+                        final Matcher m = p.matcher(response);
+                        while (m.find()) {
+                            System.out.println(domain + m.group(1));
+                            System.out.println(m.group(1));
+                            final Map<String, Object> listItem = new HashMap<String, Object>();
+                            listItem.put("posterimgId", m.group(1));
+                            try {
+                                listItem.put("movieType", URLDecoder.decode(searchString, "gbk"));
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
+                            listItem.put("link", m.group(2));
+                            movieListData.add(listItem);
                         }
-                        listItem.put("link", m.group(2));
-                        movieListData.add(listItem);
+                        isNetError=false;
+                    } catch (IOException e) {
+                        handler.sendEmptyMessage(MSG_NET_ERROR);
+                        e.printStackTrace();
                     }
+
+
                 }else{
                     url=HOME_PAGE_URL;
-                    response = GetPostUtil.sendGetGbk(url,null);
-                    //这个有title
-                    p = Pattern.compile("<a href=\"javascript:layer1On\\('(\\d+)'\\)\" title=\"(.*)\"><img border=\"0\" src=\"(.*)\" width=\"86\" height=\"121\"></a>");
-                    final Matcher m = p.matcher(response);
-                    while (m.find()) {
-                        System.out.println(domain + m.group(1));
-                        System.out.println(m.group(1));
-                        final Map<String, Object> listItem = new HashMap<String, Object>();
-                        listItem.put("posterimgId", m.group(1));
-                        listItem.put("movieType", m.group(2));
-                        listItem.put("link", m.group(3));
-                        movieListData.add(listItem);
+                    try {
+                        response = GetPostUtil.sendGetGbk(url,null);
+                        //这个有title
+                        p = Pattern.compile("<a href=\"javascript:layer1On\\('(\\d+)'\\)\" title=\"(.*)\"><img border=\"0\" src=\"(.*)\" width=\"86\" height=\"121\"></a>");
+                        final Matcher m = p.matcher(response);
+                        while (m.find()) {
+                            System.out.println(domain + m.group(1));
+                            System.out.println(m.group(1));
+                            final Map<String, Object> listItem = new HashMap<String, Object>();
+                            listItem.put("posterimgId", m.group(1));
+                            listItem.put("movieType", m.group(2));
+                            listItem.put("link", m.group(3));
+                            movieListData.add(listItem);
+                        }
+                        isNetError=false;
+                    } catch (MalformedURLException e) {
+                        //网络错误
+                        handler.sendEmptyMessage(MSG_NET_ERROR);
+                        e.printStackTrace();
+                        return;
+                    } catch (IOException e) {
+                        handler.sendEmptyMessage(MSG_NET_ERROR);
+                        e.printStackTrace();
                     }
+
+
                 }
 
 
-
-                Pattern p2 = Pattern.compile("<td><div class=\"out2\"><span style=\"color: #016A9F\">(.*)</span><br>(.*)</div></td>");
-                final Matcher m2 = p2.matcher(response);
-                while (m2.find()) {
-                    System.out.println(m2.group(1));
-                    movieListData.get(i).put("movieName", m2.group(1));
-                    movieListData.get(i).put("movieDesc", m2.group(2));
-                    i++;
+                if (!isNetError){
+                    Pattern p2 = Pattern.compile("<td><div class=\"out2\"><span style=\"color: #016A9F\">(.*)</span><br>(.*)</div></td>");
+                    final Matcher m2 = p2.matcher(response);
+                    while (m2.find()) {
+                        System.out.println(m2.group(1));
+                        movieListData.get(i).put("movieName", m2.group(1));
+                        movieListData.get(i).put("movieDesc", m2.group(2));
+                        i++;
+                    }
+                    //发送消息通知ui线程更新UI组件
+                    handler.sendEmptyMessage(0x123);
                 }
-
-
-
-                //发送消息通知ui线程更新UI组件
-                handler.sendEmptyMessage(0x123);
 
 
             }
@@ -508,6 +553,8 @@ public class MovieActivity extends AppCompatActivity
                 }
                 //更新typelist
                 if (msg.what==0x124){
+                    LinearLayout loading= (LinearLayout) findViewById(R.id.loadingAnimT);
+                    loading.setVisibility(View.GONE);
                     for (int i = 0; i < typeArr.length; i++) {
                         Map<String, Object> listItem = new HashMap<String, Object>();
                         listItem.put("type",typeArr[i]);
@@ -518,12 +565,20 @@ public class MovieActivity extends AppCompatActivity
                     MovieTypeAdapter adapter=new MovieTypeAdapter(context,typeListData);
                     movieTypeList.setAdapter(adapter);
                 }
+                if(msg.what==MSG_NET_ERROR){
+                    TextView textT= (TextView) findViewById(R.id.textT);
+                    textT.setText("网络错误，请确保连接南开大学wifi！");
+                    TextView text= (TextView) findViewById(R.id.text);
+                    text.setText("网络错误，请确保连接南开大学wifi！");
+                    Toast.makeText(context,"网络错误，请确保连接南开大学wifi！",Toast.LENGTH_LONG).show();
+                }
 
             }
         };
     }
     private void init(){
         movieGridView= (GridView) findViewById(R.id.movieGridview);
+        share=new WXShareUtil(this);
         initTabHost();
         initSearchView();
         initTypeList();

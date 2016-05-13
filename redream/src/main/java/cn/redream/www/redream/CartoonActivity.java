@@ -38,6 +38,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
@@ -58,6 +59,7 @@ public class CartoonActivity extends AppCompatActivity implements TabHost.OnTabC
     static final String VIDEO_URL = "http://12club.nankai.edu.cn/programs";
     static final String SEARCH_URL = "http://12club.nankai.edu.cn/search";
     static final String LOCAL_DIR = "inankai/comic";
+    private static final int MSG_NET_ERROR =0x140 ;
     TabHost tabHost;
     String responseCartoon;
     String responseVideo;
@@ -241,24 +243,31 @@ public class CartoonActivity extends AppCompatActivity implements TabHost.OnTabC
         new Thread() {
             @Override
             public void run() {
-                responseCartoon = GetPostUtil.sendGet(CARTOON_URL, "category_id=1");
-                Pattern p = Pattern.compile("<a class='pic_link' href='(.*)'[\\s\\S]+?data-original='(.+)'[\\s\\S]+?<div class='title_box'>[\\s\\S]+?\">(.+)</a>[\\s\\S]+?<div class='lastest_update'>[\\s\\S]+?\">(.+)</a>[\\s\\S]+?<div class='update_date'>(.+)</div>[\\s\\S]+?<div class='rank_value'>(.+)</div>");
-                final Matcher m = p.matcher(responseCartoon);
-                int i = 0;
-                while (m.find()) {
-                    System.out.println(domain + m.group(1));
-                    System.out.println(m.group(1));
-                    final Map<String, Object> listItem = new HashMap<String, Object>();
-                    listItem.put("descLink", m.group(1));
-                    listItem.put("imgLink", m.group(2));
-                    listItem.put("name", m.group(3));
-                    listItem.put("latest", "最近更新" + m.group(4));
-                    listItem.put("time", m.group(5));
-                    listItem.put("downloadCount", m.group(6));
-                    cartoonListItems.add(listItem);
+                try {
+                    responseCartoon = GetPostUtil.sendGet(CARTOON_URL, "category_id=1");
+                    Pattern p = Pattern.compile("<a class='pic_link' href='(.*)'[\\s\\S]+?data-original='(.+)'[\\s\\S]+?<div class='title_box'>[\\s\\S]+?\">(.+)</a>[\\s\\S]+?<div class='lastest_update'>[\\s\\S]+?\">(.+)</a>[\\s\\S]+?<div class='update_date'>(.+)</div>[\\s\\S]+?<div class='rank_value'>(.+)</div>");
+                    final Matcher m = p.matcher(responseCartoon);
+                    int i = 0;
+                    while (m.find()) {
+                        System.out.println(domain + m.group(1));
+                        System.out.println(m.group(1));
+                        final Map<String, Object> listItem = new HashMap<String, Object>();
+                        listItem.put("descLink", m.group(1));
+                        listItem.put("imgLink", m.group(2));
+                        listItem.put("name", m.group(3));
+                        listItem.put("latest", "最近更新" + m.group(4));
+                        listItem.put("time", m.group(5));
+                        listItem.put("downloadCount", m.group(6));
+                        cartoonListItems.add(listItem);
+                    }
+                    //发送消息通知ui线程更新UI组件
+                    handler.sendEmptyMessage(0x123);
+                } catch (IOException e) {
+                    //网络错误
+                    handler.sendEmptyMessage(MSG_NET_ERROR);
+                    e.printStackTrace();
                 }
-                //发送消息通知ui线程更新UI组件
-                handler.sendEmptyMessage(0x123);
+
             }
         }.start();
 
@@ -269,24 +278,31 @@ public class CartoonActivity extends AppCompatActivity implements TabHost.OnTabC
         new Thread() {
             @Override
             public void run() {
-                responseVideo = GetPostUtil.sendGet(CARTOON_URL, "category_id=6");
-                Pattern p = Pattern.compile("<a class='pic_link' href='(.*)'[\\s\\S]+?data-original='(.+)'[\\s\\S]+?<div class='title_box'>[\\s\\S]+?\">(.+)</a>[\\s\\S]+?<div class='lastest_update'>[\\s\\S]+?\">(.+)</a>[\\s\\S]+?<div class='update_date'>(.+)</div>[\\s\\S]+?<div class='rank_value'>(.+)</div>");
-                final Matcher m = p.matcher(responseVideo);
-                int i = 0;
-                while (m.find()) {
-                    System.out.println(domain + m.group(1));
-                    System.out.println(m.group(1));
-                    final Map<String, Object> listItem = new HashMap<String, Object>();
-                    listItem.put("descLink", m.group(1));
-                    listItem.put("imgLink", m.group(2));
-                    listItem.put("name", m.group(3));
-                    listItem.put("latest", "最近更新" + m.group(4));
-                    listItem.put("time", m.group(5));
-                    listItem.put("downloadCount", m.group(6));
-                    videoListItems.add(listItem);
+                try {
+                    responseVideo = GetPostUtil.sendGet(CARTOON_URL, "category_id=6");
+                    Pattern p = Pattern.compile("<a class='pic_link' href='(.*)'[\\s\\S]+?data-original='(.+)'[\\s\\S]+?<div class='title_box'>[\\s\\S]+?\">(.+)</a>[\\s\\S]+?<div class='lastest_update'>[\\s\\S]+?\">(.+)</a>[\\s\\S]+?<div class='update_date'>(.+)</div>[\\s\\S]+?<div class='rank_value'>(.+)</div>");
+                    final Matcher m = p.matcher(responseVideo);
+                    int i = 0;
+                    while (m.find()) {
+                        System.out.println(domain + m.group(1));
+                        System.out.println(m.group(1));
+                        final Map<String, Object> listItem = new HashMap<String, Object>();
+                        listItem.put("descLink", m.group(1));
+                        listItem.put("imgLink", m.group(2));
+                        listItem.put("name", m.group(3));
+                        listItem.put("latest", "最近更新" + m.group(4));
+                        listItem.put("time", m.group(5));
+                        listItem.put("downloadCount", m.group(6));
+                        videoListItems.add(listItem);
+                    }
+                    //发送消息通知ui线程更新UI组件
+                    handler.sendEmptyMessage(0x126);
+                } catch (IOException e) {
+                    //网络错误
+                    handler.sendEmptyMessage(MSG_NET_ERROR);
+                    e.printStackTrace();
                 }
-                //发送消息通知ui线程更新UI组件
-                handler.sendEmptyMessage(0x126);
+
             }
         }.start();
 
@@ -467,7 +483,8 @@ public class CartoonActivity extends AppCompatActivity implements TabHost.OnTabC
             public void handleMessage(Message msg) {
 
                 if (msg.what == 0x123) {
-
+                    LinearLayout loading= (LinearLayout) findViewById(R.id.loadingAnim);
+                    loading.setVisibility(View.GONE);
                     AsyncCartoonListViewAdapter adapter = new AsyncCartoonListViewAdapter(context, cartoonListItems);
                     cartoonList.setAdapter(adapter);
 
@@ -494,10 +511,18 @@ public class CartoonActivity extends AppCompatActivity implements TabHost.OnTabC
                     Toast.makeText(context, "下载成功！", Toast.LENGTH_SHORT).show();
                 }
                 if (msg.what == 0x126) {
-
+                    LinearLayout loading= (LinearLayout) findViewById(R.id.loadingAnimT);
+                    loading.setVisibility(View.GONE);
                     AsyncCartoonListViewAdapter adapter = new AsyncCartoonListViewAdapter(context, videoListItems);
                     videoList.setAdapter(adapter);
 
+                }
+                if(msg.what==MSG_NET_ERROR){
+                    TextView textT= (TextView) findViewById(R.id.textT);
+                    textT.setText("网络错误，请确保连接南开大学wifi！");
+                    TextView text= (TextView) findViewById(R.id.text);
+                    text.setText("网络错误，请确保连接南开大学wifi！");
+                    Toast.makeText(context,"网络错误，请确保连接南开大学wifi！",Toast.LENGTH_LONG).show();
                 }
             }
         };
@@ -537,8 +562,8 @@ public class CartoonActivity extends AppCompatActivity implements TabHost.OnTabC
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        String title = "ipv6电视、光影传奇、十二社区、桃源音乐，在南开用inankai就够了，不走流量哦~";
-        String desc = "一款南开必备神器，墙裂推荐！";
+        String title = "ink media | 不花流量的影音神器";
+        String desc = "电视电影动漫音乐，畅享无流量！南开人，你值得拥有。";
         String url = "http://inankai.cn";
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ink);
 

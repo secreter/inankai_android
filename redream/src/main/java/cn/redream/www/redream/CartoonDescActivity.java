@@ -28,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
@@ -46,6 +47,7 @@ public class CartoonDescActivity extends AppCompatActivity {
     public static final String FTP_DOWN_LOADING = "ftp文件正在下载";
     public static final String FTP_DOWN_SUCCESS = "ftp文件下载成功";
     public static final String FTP_DOWN_FAIL = "ftp文件下载失败";
+    private static final int MSG_NET_ERROR =0x140 ;
     Context context=this;
     RedreamApp redreamApp;
     WXShareUtil share;
@@ -245,46 +247,52 @@ public class CartoonDescActivity extends AppCompatActivity {
             @Override
             public void run() {
                 bitmap=getBitmap(domain + imgLink, 200, 280);
-                response = GetPostUtil.sendGet(descLink, "");
-                Pattern p= Pattern.compile("字幕组:</td><td class='val'>(.*)</td>[\\s\\S]+当前状态:</td><td class='val'>(.*)</td>");
-                final Matcher m= p.matcher(response);
-                while (m.find()){
-                    System.out.println(m.group(1));
-                    listItem.put("fansub", m.group(1));
-                    listItem.put("state",m.group(2));
-                }
-                //下载链接<a href="/program_items/14369" class="download_link" title="第 3 话">第 3 话</a>
-                Pattern p2= Pattern.compile("<a href=\"(.*)\" class=\"download_link\" title=\"(.*)\">(.*)</a>\n" +
-                        "          <span class='filesize'>(.*)</span>");
-                Matcher m2= p2.matcher(response);
-                boolean is_match=false;
-                while (m2.find()){
-                    is_match=true;
-                    Map<String,Object> downloadMap=new HashMap<String, Object>();
-                    System.out.println(m2.group(1));
-                    downloadMap.put("downloadLink", m2.group(1));
-                    downloadMap.put("img", R.mipmap.icon_download_normal);
-                    downloadMap.put("episode", m2.group(2));
-                    downloadMap.put("storage",m2.group(4));
-                    downloadList.add(downloadMap);
-                }
-                if(!is_match){
-                    //有的没有文件大小。。。
-                    p2= Pattern.compile("<a href=\"(.*)\" class=\"download_link\" title=\"(.*)\">(.*)</a>");
-                    m2= p2.matcher(response);
+                try {
+                    response = GetPostUtil.sendGet(descLink, "");
+                    Pattern p= Pattern.compile("字幕组:</td><td class='val'>(.*)</td>[\\s\\S]+当前状态:</td><td class='val'>(.*)</td>");
+                    final Matcher m= p.matcher(response);
+                    while (m.find()){
+                        System.out.println(m.group(1));
+                        listItem.put("fansub", m.group(1));
+                        listItem.put("state",m.group(2));
+                    }
+                    //下载链接<a href="/program_items/14369" class="download_link" title="第 3 话">第 3 话</a>
+                    Pattern p2= Pattern.compile("<a href=\"(.*)\" class=\"download_link\" title=\"(.*)\">(.*)</a>\n" +
+                            "          <span class='filesize'>(.*)</span>");
+                    Matcher m2= p2.matcher(response);
+                    boolean is_match=false;
                     while (m2.find()){
+                        is_match=true;
                         Map<String,Object> downloadMap=new HashMap<String, Object>();
                         System.out.println(m2.group(1));
                         downloadMap.put("downloadLink", m2.group(1));
                         downloadMap.put("img", R.mipmap.icon_download_normal);
                         downloadMap.put("episode", m2.group(2));
-                        downloadMap.put("storage","未知");
+                        downloadMap.put("storage",m2.group(4));
                         downloadList.add(downloadMap);
                     }
+                    if(!is_match){
+                        //有的没有文件大小。。。
+                        p2= Pattern.compile("<a href=\"(.*)\" class=\"download_link\" title=\"(.*)\">(.*)</a>");
+                        m2= p2.matcher(response);
+                        while (m2.find()){
+                            Map<String,Object> downloadMap=new HashMap<String, Object>();
+                            System.out.println(m2.group(1));
+                            downloadMap.put("downloadLink", m2.group(1));
+                            downloadMap.put("img", R.mipmap.icon_download_normal);
+                            downloadMap.put("episode", m2.group(2));
+                            downloadMap.put("storage","未知");
+                            downloadList.add(downloadMap);
+                        }
+                    }
+
+                    //发送消息通知ui线程更新UI组件
+                    handler.sendEmptyMessage(0x123);
+                } catch (IOException e) {
+                    handler.sendEmptyMessage(MSG_NET_ERROR);
+                    e.printStackTrace();
                 }
 
-                //发送消息通知ui线程更新UI组件
-                handler.sendEmptyMessage(0x123);
             }
         }.start();
     }
@@ -384,6 +392,11 @@ public class CartoonDescActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), downloadName.get(i)+"下载成功！", Toast.LENGTH_SHORT).show();
                         }
                     }
+                }
+                if(msg.what==MSG_NET_ERROR){
+                    TextView text= (TextView) findViewById(R.id.text);
+                    text.setText("网络错误，请确保连接南开大学wifi！");
+                    Toast.makeText(context,"网络错误，请确保连接南开大学wifi！",Toast.LENGTH_LONG).show();
                 }
 
             }

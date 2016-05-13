@@ -151,8 +151,8 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        String title = "ipv6电视、光影传奇、十二社区、桃源音乐，在南开用inankai就够了，不走流量哦~";
-        String desc = "一款南开必备神器，墙裂推荐！";
+        String title = "ink media | 不花流量的影音神器";
+        String desc = "电视电影动漫音乐，畅享无流量！南开人，你值得拥有。";
         String url = "http://inankai.cn";
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ink);
 
@@ -199,8 +199,8 @@ public class MainActivity extends AppCompatActivity
             intent = new Intent(this, TreeholeActivity.class);
             startActivity(intent);
         }else if (id == R.id.nav_share) {
-            String title = "ipv6电视、光影传奇、十二社区、桃源音乐，在南开用inankai就够了，不走流量哦~";
-            String desc = "一款南开必备神器，墙裂推荐！";
+            String title = "ink media | 不花流量的影音神器";
+            String desc = "电视电影动漫音乐，畅享无流量！南开人，你值得拥有。";
             String url = "http://inankai.cn";
             Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ink);
             share.sendUrl(url, true, title, desc, bitmap);

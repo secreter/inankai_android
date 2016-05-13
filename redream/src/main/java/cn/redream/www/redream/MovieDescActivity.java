@@ -58,6 +58,7 @@ public class MovieDescActivity extends AppCompatActivity {
     public static final String SEARCH_URL="http://222.30.44.37/filmclass.php?action=search";
     public static final String CATEGORY_URL="http://222.30.44.37/filmclass.php?page=0&class=type&content=";
     private Context context=this;
+    private static final int MSG_NET_ERROR =0x140 ;
     RedreamApp redreamApp;
     private String response;
     private String responseRealUrl;
@@ -165,7 +166,7 @@ public class MovieDescActivity extends AppCompatActivity {
 
                         manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                         notif= (Notification) msg.obj;
-                        notif.contentView.setTextViewText(R.id.content_view_text1, downloadName.get(i) + "已下载" + Math.round(100 * (float) msg.arg2 / msg.arg1) + "%"+"共"+ msg.arg1 /1048576+"M");
+                        notif.contentView.setTextViewText(R.id.content_view_text1, downloadName.get(i) + "已下载" + Math.ceil(100 * (float) msg.arg2 / msg.arg1) + "%"+"共"+ msg.arg1 /1048576+"M");
                         notif.contentView.setProgressBar(R.id.content_view_progress, msg.arg1, msg.arg2, false);
                         manager.notify(i, notif);
                         if (msg.arg2== msg.arg1){
@@ -321,7 +322,8 @@ public class MovieDescActivity extends AppCompatActivity {
             @Override
             public void run() {
 //                final String url=getRealDownloadUrl((String) view.getTag());
-                final String url=MOVIE_INFO_URL+"?id="+posterimgId;
+//                final String url=MOVIE_INFO_URL+"?id="+posterimgId;
+                final String url="http://inankai.cn/new/index.html#app";
                 String title=movieName+" | ink media";
                 String description="ink media看南开内网电影,免流量哦~";
 
@@ -336,7 +338,17 @@ public class MovieDescActivity extends AppCompatActivity {
         new Thread() {
             @Override
             public void run() {
-                response = GetPostUtil.sendGetGbk(MOVIE_INFO_URL, "id="+posterimgId);
+                try {
+                    response = GetPostUtil.sendGetGbk(MOVIE_INFO_URL, "id="+posterimgId);
+                } catch (MalformedURLException e) {
+                    //网络错误
+                    handler.sendEmptyMessage(MSG_NET_ERROR);
+                    e.printStackTrace();
+                    return;
+                } catch (IOException e) {
+                    handler.sendEmptyMessage(MSG_NET_ERROR);
+                    e.printStackTrace();
+                }
                 Pattern p = Pattern.compile(">\\s+(.+)<span style=\"color: #016A9F\">(.*)</span>");
                 final Matcher m = p.matcher(response);
                 int i = 0;
@@ -427,7 +439,17 @@ public class MovieDescActivity extends AppCompatActivity {
             movieId=m.group(2);
         }
         System.out.println(movieName);
-        responseRealUrl = GetPostUtil.sendGetGbk(GET_IP_UR, "version=1.2.0.3&filmid=" + movieId + GET_IP_URL_AFTER);
+        try {
+            responseRealUrl = GetPostUtil.sendGetGbk(GET_IP_UR, "version=1.2.0.3&filmid=" + movieId + GET_IP_URL_AFTER);
+        } catch (MalformedURLException e) {
+            //网络错误
+            handler.sendEmptyMessage(MSG_NET_ERROR);
+            e.printStackTrace();
+            return null;
+        } catch (IOException e) {
+            handler.sendEmptyMessage(MSG_NET_ERROR);
+            e.printStackTrace();
+        }
         Pattern p2 = Pattern.compile("\\*(.*?)\\|(.*?)\\|(.*?)");
         final Matcher m2 = p2.matcher(responseRealUrl);
         System.out.println(responseRealUrl);

@@ -102,7 +102,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="ink media由inankai工作室开发，资源均来自学校平台。其中ipv6网络电视需要安卓4.4及以上版本支持，其余资源均为内网资源，需要在南开内网使用。以上功能均不走流量"/>
+            android:text="ink media由inankai工作室开发，资源均来自学校平台。其中ipv6网络电视需要安卓4.4及以上版本支持，其余资源均为内网资源，需要在南开内网使用。以上功能均不走流量。"/>
     </LinearLayout>
     <LinearLayout
         android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -117,7 +117,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="3"
-            android:text="界面设计"/>
+            android:text="界面设计:"/>
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -137,7 +137,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="3"
-            android:text="软件开发"/>
+            android:text="软件开发:"/>
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -157,7 +157,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="3"
-            android:text="加入我们"/>
+            android:text="加入我们:"/>
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -177,7 +177,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="3"
-            android:text="copyright"/>
+            android:text="copyright:"/>
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

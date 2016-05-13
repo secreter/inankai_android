@@ -22,7 +22,7 @@ public class GetPostUtil {
 *
 *
 * */
-    public static String sendGet(String url,String params){
+    public static String sendGet(String url,String params) throws IOException {
         String result="";
         BufferedReader in=null;
         try{
@@ -50,10 +50,12 @@ public class GetPostUtil {
                 result+="\n"+line;
             }
         } catch (MalformedURLException e) {
-            System.out.println("GET请求出现异常"+e);
-            e.printStackTrace();
+            System.out.println("GET请求出现异常" + e);
+            throw e;
+//            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw e;
+//            e.printStackTrace();
         }
         //使用final来关闭输入流
         finally{
@@ -67,7 +69,7 @@ public class GetPostUtil {
         }
         return result;
     }
-    public static String sendGetGbk(String url,String params){
+    public static String sendGetGbk(String url,String params) throws IOException {
         String result="";
         BufferedReader in=null;
         try{
@@ -95,10 +97,13 @@ public class GetPostUtil {
                 result+="\n"+line;
             }
         } catch (MalformedURLException e) {
+
             System.out.println("GET请求出现异常"+e);
-            e.printStackTrace();
+            throw e;
+            //e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw e;
+//            e.printStackTrace();
         }
         //使用final来关闭输入流
         finally{
@@ -165,7 +170,7 @@ public class GetPostUtil {
         }
         return result;
     }
-    public static String sendPostGbk(String url,String params){
+    public static String sendPostGbk(String url,String params) throws IOException {
         PrintWriter out=null;
         BufferedReader in=null;
         String result="";
@@ -194,7 +199,7 @@ public class GetPostUtil {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw e;
         }
         finally {
             if (out!=null){

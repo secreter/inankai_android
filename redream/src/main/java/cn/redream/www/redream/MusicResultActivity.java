@@ -74,7 +74,11 @@ public class MusicResultActivity extends AppCompatActivity {
         new Thread() {
             @Override
             public void run() {
-                response = GetPostUtil.sendPostGbk("http://music.nankai.edu.cn/main.php?iframeID=layer_d_3_I", "searchtype=artist&searchstring=" + artist_gb_urlencode);
+                try {
+                    response = GetPostUtil.sendPostGbk("http://music.nankai.edu.cn/main.php?iframeID=layer_d_3_I", "searchtype=artist&searchstring=" + artist_gb_urlencode);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 //发送消息通知ui线程更新UI组件
                 handler.sendEmptyMessage(0x123);
             }

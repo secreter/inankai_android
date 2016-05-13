@@ -60,6 +60,32 @@
                         android:layout_column="1" />
                 </TableRow>
                 </TableLayout>
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:id="@+id/loadingAnimT">
+
+                    <ProgressBar
+                        android:id="@+id/imgT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:indeterminateDrawable="@drawable/page_loading"
+                        style="@style/publicloadingProgressStyle"/>
+
+                    <TextView
+                        android:id="@+id/textT"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10.0dip"
+                        android:gravity="center"
+                        android:paddingLeft="25.0dip"
+                        android:paddingRight="25.0dip"
+                        android:text="小驴正在努力为您加载，请稍候~"
+                        android:textColor="@android:color/black" />
+                </LinearLayout>
                 <ScrollView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -80,7 +106,32 @@
                 android:layout_height="match_parent"
                 android:id="@+id/tab2"
                 android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:id="@+id/loadingAnim">
 
+                    <ProgressBar
+                        android:id="@+id/img"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:indeterminateDrawable="@drawable/page_loading"
+                        style="@style/publicloadingProgressStyle"/>
+
+                    <TextView
+                        android:id="@+id/text"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10.0dip"
+                        android:gravity="center"
+                        android:paddingLeft="25.0dip"
+                        android:paddingRight="25.0dip"
+                        android:text="小驴正在努力为您加载，请稍候~"
+                        android:textColor="@android:color/black" />
+                </LinearLayout>
                 <ScrollView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

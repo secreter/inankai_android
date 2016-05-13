@@ -67,6 +67,7 @@ public class MusicTabActivity extends AppCompatActivity implements TabHost.OnTab
     Context context;
     WXShareUtil share;
     final String LOCAL_DIR="inankai/music";
+    private static final int MSG_NET_ERROR =0x140 ;
 
     private SearchView searchArtist;
     private SearchView searchTitle;
@@ -159,9 +160,16 @@ public class MusicTabActivity extends AppCompatActivity implements TabHost.OnTab
                     @Override
                     public void run() {
                         String query_gb = strToGb2312(query);
-                        response = GetPostUtil.sendPostGbk("http://music.nankai.edu.cn/artistlist.php?iffit=yes", "searchtype=artist&searchstring=" + query_gb);
-                        //发送消息通知ui线程更新UI组件
-                        handler.sendEmptyMessage(0x123);
+                        try {
+                            response = GetPostUtil.sendPostGbk("http://music.nankai.edu.cn/artistlist.php?iffit=yes", "searchtype=artist&searchstring=" + query_gb);
+                            //发送消息通知ui线程更新UI组件
+                            handler.sendEmptyMessage(0x123);
+                        } catch (IOException e) {
+                            //网络错误
+                            handler.sendEmptyMessage(MSG_NET_ERROR);
+                            e.printStackTrace();
+                        }
+
                     }
                 }.start();
                 return false;
@@ -179,9 +187,16 @@ public class MusicTabActivity extends AppCompatActivity implements TabHost.OnTab
                     @Override
                     public void run() {
                         String query_gb = strToGb2312(query);
-                        response = GetPostUtil.sendPostGbk("http://music.nankai.edu.cn/main.php?iframeID=layer_d_3_I", "searchtype=title&searchstring=" + query_gb);
-                        //发送消息通知ui线程更新UI组件
-                        handler.sendEmptyMessage(0x124);
+                        try {
+                            response = GetPostUtil.sendPostGbk("http://music.nankai.edu.cn/main.php?iframeID=layer_d_3_I", "searchtype=title&searchstring=" + query_gb);
+                            //发送消息通知ui线程更新UI组件
+                            handler.sendEmptyMessage(0x124);
+                        } catch (IOException e) {
+                            //网络错误
+                            handler.sendEmptyMessage(MSG_NET_ERROR);
+                            e.printStackTrace();
+                        }
+
                     }
                 }.start();
                 return false;
@@ -215,9 +230,16 @@ public class MusicTabActivity extends AppCompatActivity implements TabHost.OnTab
                     @Override
                     public void run() {
                         String query_gb = strToGb2312(map.get("personName").toString());
-                        response = GetPostUtil.sendPostGbk("http://music.nankai.edu.cn/main.php?iframeID=layer_d_3_I", "searchtype=artist&searchstring=" + query_gb);
-                        //发送消息通知ui线程更新UI组件
-                        handler.sendEmptyMessage(0x126);
+                        try {
+                            response = GetPostUtil.sendPostGbk("http://music.nankai.edu.cn/main.php?iframeID=layer_d_3_I", "searchtype=artist&searchstring=" + query_gb);
+                            //发送消息通知ui线程更新UI组件
+                            handler.sendEmptyMessage(0x126);
+                        } catch (IOException e) {
+                            //网络错误
+                            handler.sendEmptyMessage(MSG_NET_ERROR);
+                            e.printStackTrace();
+                        }
+
                     }
                 }.start();
             }
@@ -290,9 +312,9 @@ public class MusicTabActivity extends AppCompatActivity implements TabHost.OnTab
                 redreamApp.lastPlayViewPos = (position == 0) ? itemCount - 1 : position - 1;
                 redreamApp.curPlayViewPos = position;
                 redreamApp.nextPlayViewPos = (position == itemCount - 1) ? 0 : position + 1;
-                Log.v("pcy", "lastPlayViewPos:" + redreamApp.lastPlayViewPos);
-                Log.v("pcy", "curPlayViewPos:" + redreamApp.curPlayViewPos);
-                Log.v("pcy", "nextPlayViewPos:" + redreamApp.nextPlayViewPos);
+//                Log.v("pcy", "lastPlayViewPos:" + redreamApp.lastPlayViewPos);
+//                Log.v("pcy", "curPlayViewPos:" + redreamApp.curPlayViewPos);
+//                Log.v("pcy", "nextPlayViewPos:" + redreamApp.nextPlayViewPos);
                 lastPlayView = curPlayView;
                 curPlayView = view;
 
@@ -361,6 +383,7 @@ public class MusicTabActivity extends AppCompatActivity implements TabHost.OnTab
                 Matcher m=p.matcher(response);
                 int i=0;
                 while(m.find()){
+                    i++;
                     System.out.println(m.group(1));
                     System.out.println(m.group(2));
                     System.out.println(m.group(3));
@@ -423,6 +446,11 @@ public class MusicTabActivity extends AppCompatActivity implements TabHost.OnTab
                 Toast.makeText(context,"播放下一首！",Toast.LENGTH_SHORT).show();
                 //下载成功本地就多一首歌，更新本地列表
                 flashPlayList(nextPlayView);
+            }
+            if(msg.what==MSG_NET_ERROR){
+                TextView text= (TextView) findViewById(R.id.text);
+                text.setText("网络错误，请确保连接南开大学wifi！");
+                Toast.makeText(context,"网络错误，请确保连接南开大学wifi！",Toast.LENGTH_LONG).show();
             }
 
 
@@ -944,8 +972,8 @@ public class MusicTabActivity extends AppCompatActivity implements TabHost.OnTab
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        String title = "inankai media|一款神奇的南开软件";
-        String desc = "ipv6电视、光影传奇、十二社区、桃源音乐，在南开用inankai就够了，不走流量哦~";
+        String title = "ink media | 不花流量的影音神器";
+        String desc = "电视电影动漫音乐，畅享无流量！南开人，你值得拥有。";
         String url = "http://inankai.cn";
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ink);
 
@@ -991,8 +1019,8 @@ public class MusicTabActivity extends AppCompatActivity implements TabHost.OnTab
             intent = new Intent(this, TreeholeActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_share) {
-            String title = "ipv6电视、光影传奇、十二社区、桃源音乐，在南开用inankai就够了，不走流量哦~";
-            String desc = "一款南开必备神器，墙裂推荐！";
+            String title = "ink media | 不花流量的影音神器";
+            String desc = "电视电影动漫音乐，畅享无流量！南开人，你值得拥有。";
             String url = "http://inankai.cn";
             Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ink);
             share.sendUrl(url, true, title, desc, bitmap);

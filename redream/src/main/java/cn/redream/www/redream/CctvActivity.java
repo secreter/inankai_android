@@ -127,8 +127,8 @@ public class CctvActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        String title = "ipv6电视、光影传奇、十二社区、桃源音乐，在南开用inankai就够了，不走流量哦~";
-        String desc = "一款南开必备神器，墙裂推荐！";
+        String title = "ink media | 不花流量的影音神器";
+        String desc = "电视电影动漫音乐，畅享无流量！南开人，你值得拥有。";
         String url = "http://inankai.cn";
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ink);
 
@@ -174,8 +174,8 @@ public class CctvActivity extends AppCompatActivity
             intent = new Intent(this, TreeholeActivity.class);
             startActivity(intent);
         }else if (id == R.id.nav_share) {
-            String title = "ipv6电视、光影传奇、十二社区、桃源音乐，在南开用inankai就够了，不走流量哦~";
-            String desc = "一款南开必备神器，墙裂推荐！";
+            String title = "ink media | 不花流量的影音神器";
+            String desc = "电视电影动漫音乐，畅享无流量！南开人，你值得拥有。";
             String url = "http://inankai.cn";
             Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ink);
             share.sendUrl(url, true, title, desc, bitmap);
@@ -191,7 +191,6 @@ public class CctvActivity extends AppCompatActivity
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Toast.makeText(this, "我是" + position, Toast.LENGTH_SHORT).show();
         GridView listView= (GridView) parent;
         HashMap<String, Object> map = (HashMap<String, Object>) listView.getItemAtPosition(position);
         Intent intent=new Intent();
