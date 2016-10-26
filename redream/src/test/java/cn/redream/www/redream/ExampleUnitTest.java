@@ -1,4 +1,4 @@
-package cn.redream.www.redream;
+package cn.redream.www.ink_media;
 
 import org.junit.Test;
 

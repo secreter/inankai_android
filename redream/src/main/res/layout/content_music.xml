@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="#eee"
     app:layout_behavior="@string/appbar_scrolling_view_behavior" tools:showIn="@layout/app_bar_music"
-    tools:context="cn.redream.www.redream.MusicTabActivity">
+    tools:context="cn.redream.www.ink_media.MusicTabActivity">
 <TabHost xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"

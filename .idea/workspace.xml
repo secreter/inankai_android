@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="9d90f5a4-1942-4c3c-9abd-77c21692f4a1" name="Default" comment="光影电影下载不了，找到原因是因为获取的ip地址指向的位置没有资源，如果重复请求几十次，返回的ip地址就会改变，http://222.30.44.35:80/episode/%D0%D0%CA%AC%D7%DF%C8%E2%B5%DA%C6%DF%BC%BE/The.Walking.Dead.S07E01.720p.HDTV.x264-KILLERS.rmvb是正常生成的url，但没有资源，222.30.44.33有，试了好几个都对，暂时先硬编码替换。注意这里不稳妥！">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/redream/.gradle/2.8/taskArtifacts/cache.properties.lock" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/redream/.gradle/2.8/taskArtifacts/fileHashes.bin" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/redream/.gradle/2.8/taskArtifacts/fileSnapshots.bin" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/redream/gradle/wrapper/gradle-wrapper.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/redream/.gradle/2.8/taskArtifacts/outputFileStates.bin" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/redream/redream-debug.apk" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/redream/redream-release.apk" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/redream/.gradle/2.8/taskArtifacts/taskArtifacts.bin" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/.name" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/redream/.idea/.name" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/redream/src/main/java/cn/redream/www/ink_media/Main2Activity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/redream/src/main/res/layout/activity_main2.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/redream/.gradle/2.8/taskArtifacts/cache.properties" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/redream/.idea/compiler.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/redream/gradle/wrapper/gradle-wrapper.properties" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/redream/.idea/gradle.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/redream/gradlew.bat" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/redream/gradlew" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/inankai.iml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/redream/local.properties" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/redream/.idea/misc.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/redream/.idea/modules.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/redream/.idea/copyright/profiles_settings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/redream/redream/redream-redream.iml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/redream/settings.gradle" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/redream/.idea/vcs.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/redream/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/redream/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/redream/src/main/AndroidManifest.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/redream/src/test/java/cn/redream/www/redream/ExampleUnitTest.java" afterPath="$PROJECT_DIR$/redream/src/test/java/cn/redream/www/redream/ExampleUnitTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/redream/src/main/res/layout/activity_about.xml" afterPath="$PROJECT_DIR$/redream/src/main/res/layout/activity_about.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/redream/src/main/res/layout/activity_local_movie.xml" afterPath="$PROJECT_DIR$/redream/src/main/res/layout/activity_local_movie.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/redream/src/main/res/layout/activity_music_result.xml" afterPath="$PROJECT_DIR$/redream/src/main/res/layout/activity_music_result.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/redream/src/main/res/layout/app_bar_cartoon.xml" afterPath="$PROJECT_DIR$/redream/src/main/res/layout/app_bar_cartoon.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/redream/src/main/res/layout/app_bar_cctv.xml" afterPath="$PROJECT_DIR$/redream/src/main/res/layout/app_bar_cctv.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/redream/src/main/res/layout/app_bar_movie.xml" afterPath="$PROJECT_DIR$/redream/src/main/res/layout/app_bar_movie.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/redream/src/main/res/layout/app_bar_music.xml" afterPath="$PROJECT_DIR$/redream/src/main/res/layout/app_bar_music.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/redream/.idea/libraries/appcompat_v7_23_0_1.xml" afterPath="$PROJECT_DIR$/redream/.idea/libraries/appcompat_v7_23_0_1.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/redream/build.gradle" afterPath="$PROJECT_DIR$/redream/build.gradle" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/redream/src/main/res/layout/content_cartoon.xml" afterPath="$PROJECT_DIR$/redream/src/main/res/layout/content_cartoon.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/redream/src/main/res/layout/content_cctv.xml" afterPath="$PROJECT_DIR$/redream/src/main/res/layout/content_cctv.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/redream/src/main/res/layout/content_movie.xml" afterPath="$PROJECT_DIR$/redream/src/main/res/layout/content_movie.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/redream/src/main/res/layout/content_music.xml" afterPath="$PROJECT_DIR$/redream/src/main/res/layout/content_music.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/redream/src/main/res/layout/grview_cctv.xml" afterPath="$PROJECT_DIR$/redream/src/main/res/layout/grview_cctv.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/redream/src/main/res/layout/grview_local.xml" afterPath="$PROJECT_DIR$/redream/src/main/res/layout/grview_local.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/redream/src/main/res/layout/grview_movie.xml" afterPath="$PROJECT_DIR$/redream/src/main/res/layout/grview_movie.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/redream/src/main/res/layout/listview.xml" afterPath="$PROJECT_DIR$/redream/src/main/res/layout/listview.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/redream/src/main/res/layout/listview_song.xml" afterPath="$PROJECT_DIR$/redream/src/main/res/layout/listview_song.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/redream/redream.iml" afterPath="$PROJECT_DIR$/redream/redream.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/redream/.idea/libraries/support_annotations_23_0_1.xml" afterPath="$PROJECT_DIR$/redream/.idea/libraries/support_annotations_23_0_1.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/redream/.idea/libraries/support_v4_23_0_1.xml" afterPath="$PROJECT_DIR$/redream/.idea/libraries/support_v4_23_0_1.xml" />
+      <change type="MOVED" beforePath="D:\study\code\android\inankai\redream\src\androidTest\java\cn\redream\www\redream\ApplicationTest.java" afterPath="$PROJECT_DIR$/redream/src/androidTest/java/cn/redream/www/ink_media/ApplicationTest.java" />
+      <change type="MOVED" beforePath="D:\study\code\android\inankai\redream\src\main\java\cn\redream\www\redream\AboutActivity.java" afterPath="$PROJECT_DIR$/redream/src/main/java/cn/redream/www/ink_media/AboutActivity.java" />
+      <change type="MOVED" beforePath="D:\study\code\android\inankai\redream\src\main\java\cn\redream\www\redream\AsyncCartoonListViewAdapter.java" afterPath="$PROJECT_DIR$/redream/src/main/java/cn/redream/www/ink_media/AsyncCartoonListViewAdapter.java" />
+      <change type="MOVED" beforePath="D:\study\code\android\inankai\redream\src\main\java\cn\redream\www\redream\AsyncMovieGridviewAdapter.java" afterPath="$PROJECT_DIR$/redream/src/main/java/cn/redream/www/ink_media/AsyncMovieGridviewAdapter.java" />
+      <change type="MOVED" beforePath="D:\study\code\android\inankai\redream\src\main\java\cn\redream\www\redream\AsyncMovieListViewAdapter.java" afterPath="$PROJECT_DIR$/redream/src/main/java/cn/redream/www/ink_media/AsyncMovieListViewAdapter.java" />
+      <change type="MOVED" beforePath="D:\study\code\android\inankai\redream\src\main\java\cn\redream\www\redream\BitmapCompressTools.java" afterPath="$PROJECT_DIR$/redream/src/main/java/cn/redream/www/ink_media/BitmapCompressTools.java" />
+      <change type="MOVED" beforePath="D:\study\code\android\inankai\redream\src\main\java\cn\redream\www\redream\CartoonActivity.java" afterPath="$PROJECT_DIR$/redream/src/main/java/cn/redream/www/ink_media/CartoonActivity.java" />
+      <change type="MOVED" beforePath="D:\study\code\android\inankai\redream\src\main\java\cn\redream\www\redream\CartoonDescActivity.java" afterPath="$PROJECT_DIR$/redream/src/main/java/cn/redream/www/ink_media/CartoonDescActivity.java" />
+      <change type="MOVED" beforePath="D:\study\code\android\inankai\redream\src\main\java\cn\redream\www\redream\CctvActivity.java" afterPath="$PROJECT_DIR$/redream/src/main/java/cn/redream/www/ink_media/CctvActivity.java" />
+      <change type="MOVED" beforePath="D:\study\code\android\inankai\redream\src\main\java\cn\redream\www\redream\CircleImageView.java" afterPath="$PROJECT_DIR$/redream/src/main/java/cn/redream/www/ink_media/CircleImageView.java" />
+      <change type="MOVED" beforePath="D:\study\code\android\inankai\redream\src\main\java\cn\redream\www\redream\FTP.java" afterPath="$PROJECT_DIR$/redream/src/main/java/cn/redream/www/ink_media/FTP.java" />
+      <change type="MOVED" beforePath="D:\study\code\android\inankai\redream\src\main\java\cn\redream\www\redream\GetFileList.java" afterPath="$PROJECT_DIR$/redream/src/main/java/cn/redream/www/ink_media/GetFileList.java" />
+      <change type="MOVED" beforePath="D:\study\code\android\inankai\redream\src\main\java\cn\redream\www\redream\GetPostUtil.java" afterPath="$PROJECT_DIR$/redream/src/main/java/cn/redream/www/ink_media/GetPostUtil.java" />
+      <change type="MOVED" beforePath="D:\study\code\android\inankai\redream\src\main\java\cn\redream\www\redream\GuideActivity.java" afterPath="$PROJECT_DIR$/redream/src/main/java/cn/redream/www/ink_media/GuideActivity.java" />
+      <change type="MOVED" beforePath="D:\study\code\android\inankai\redream\src\main\java\cn\redream\www\redream\LocalMovieActivity.java" afterPath="$PROJECT_DIR$/redream/src/main/java/cn/redream/www/ink_media/LocalMovieActivity.java" />
+      <change type="MOVED" beforePath="D:\study\code\android\inankai\redream\src\main\java\cn\redream\www\redream\MainActivity.java" afterPath="$PROJECT_DIR$/redream/src/main/java/cn/redream/www/ink_media/MainActivity.java" />
+      <change type="MOVED" beforePath="D:\study\code\android\inankai\redream\src\main\java\cn\redream\www\redream\MovieActivity.java" afterPath="$PROJECT_DIR$/redream/src/main/java/cn/redream/www/ink_media/MovieActivity.java" />
+      <change type="MOVED" beforePath="D:\study\code\android\inankai\redream\src\main\java\cn\redream\www\redream\MovieDescActivity.java" afterPath="$PROJECT_DIR$/redream/src/main/java/cn/redream/www/ink_media/MovieDescActivity.java" />
+      <change type="MOVED" beforePath="D:\study\code\android\inankai\redream\src\main\java\cn\redream\www\redream\MovieDownloadListViewAdapter.java" afterPath="$PROJECT_DIR$/redream/src/main/java/cn/redream/www/ink_media/MovieDownloadListViewAdapter.java" />
+      <change type="MOVED" beforePath="D:\study\code\android\inankai\redream\src\main\java\cn\redream\www\redream\MovieLayout.java" afterPath="$PROJECT_DIR$/redream/src/main/java/cn/redream/www/ink_media/MovieLayout.java" />
+      <change type="MOVED" beforePath="D:\study\code\android\inankai\redream\src\main\java\cn\redream\www\redream\MovieTypeAdapter.java" afterPath="$PROJECT_DIR$/redream/src/main/java/cn/redream/www/ink_media/MovieTypeAdapter.java" />
+      <change type="MOVED" beforePath="D:\study\code\android\inankai\redream\src\main\java\cn\redream\www\redream\MusicDownloadAdapter.java" afterPath="$PROJECT_DIR$/redream/src/main/java/cn/redream/www/ink_media/MusicDownloadAdapter.java" />
+      <change type="MOVED" beforePath="D:\study\code\android\inankai\redream\src\main\java\cn\redream\www\redream\MusicPlayAdapter.java" afterPath="$PROJECT_DIR$/redream/src/main/java/cn/redream/www/ink_media/MusicPlayAdapter.java" />
+      <change type="MOVED" beforePath="D:\study\code\android\inankai\redream\src\main\java\cn\redream\www\redream\MusicResultActivity.java" afterPath="$PROJECT_DIR$/redream/src/main/java/cn/redream/www/ink_media/MusicResultActivity.java" />
+      <change type="MOVED" beforePath="D:\study\code\android\inankai\redream\src\main\java\cn\redream\www\redream\MusicService.java" afterPath="$PROJECT_DIR$/redream/src/main/java/cn/redream/www/ink_media/MusicService.java" />
+      <change type="MOVED" beforePath="D:\study\code\android\inankai\redream\src\main\java\cn\redream\www\redream\MusicTabActivity.java" afterPath="$PROJECT_DIR$/redream/src/main/java/cn/redream/www/ink_media/MusicTabActivity.java" />
+      <change type="MOVED" beforePath="D:\study\code\android\inankai\redream\src\main\java\cn\redream\www\redream\MyGridView.java" afterPath="$PROJECT_DIR$/redream/src/main/java/cn/redream/www/ink_media/MyGridView.java" />
+      <change type="MOVED" beforePath="D:\study\code\android\inankai\redream\src\main\java\cn\redream\www\redream\MyViewBinder.java" afterPath="$PROJECT_DIR$/redream/src/main/java/cn/redream/www/ink_media/MyViewBinder.java" />
+      <change type="MOVED" beforePath="D:\study\code\android\inankai\redream\src\main\java\cn\redream\www\redream\RedreamApp.java" afterPath="$PROJECT_DIR$/redream/src/main/java/cn/redream/www/ink_media/RedreamApp.java" />
+      <change type="MOVED" beforePath="D:\study\code\android\inankai\redream\src\main\java\cn\redream\www\redream\SquareLayout.java" afterPath="$PROJECT_DIR$/redream/src/main/java/cn/redream/www/ink_media/SquareLayout.java" />
+      <change type="MOVED" beforePath="D:\study\code\android\inankai\redream\src\main\java\cn\redream\www\redream\SystemBarTintManager.java" afterPath="$PROJECT_DIR$/redream/src/main/java/cn/redream/www/ink_media/SystemBarTintManager.java" />
+      <change type="MOVED" beforePath="D:\study\code\android\inankai\redream\src\main\java\cn\redream\www\redream\TestpaperActivity.java" afterPath="$PROJECT_DIR$/redream/src/main/java/cn/redream/www/ink_media/TestpaperActivity.java" />
+      <change type="MOVED" beforePath="D:\study\code\android\inankai\redream\src\main\java\cn\redream\www\redream\TreeholeActivity.java" afterPath="$PROJECT_DIR$/redream/src/main/java/cn/redream/www/ink_media/TreeholeActivity.java" />
+      <change type="MOVED" beforePath="D:\study\code\android\inankai\redream\src\main\java\cn\redream\www\redream\TvList.java" afterPath="$PROJECT_DIR$/redream/src/main/java/cn/redream/www/ink_media/TvList.java" />
+      <change type="MOVED" beforePath="D:\study\code\android\inankai\redream\src\main\java\cn\redream\www\redream\TvplaerActivity.java" afterPath="$PROJECT_DIR$/redream/src/main/java/cn/redream/www/ink_media/TvplaerActivity.java" />
+      <change type="MOVED" beforePath="D:\study\code\android\inankai\redream\src\main\java\cn\redream\www\redream\WXShareUtil.java" afterPath="$PROJECT_DIR$/redream/src/main/java/cn/redream/www/ink_media/WXShareUtil.java" />
+    </list>
+    <ignored path="inankai.iws" />
+    <ignored path=".idea/workspace.xml" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="FavoritesManager">
+    <favorites_list name="inankai" />
+  </component>
+  <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="so" />
+      </list>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GradleLocalSettings">
+    <option name="externalProjectsViewState">
+      <projects_view />
+    </option>
+  </component>
+  <component name="NamedScopeManager">
+    <order />
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1378" />
+    <option name="height" value="780" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="0" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="AndroidView">
+        <subPane />
+      </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scratches" />
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="inankai" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="inankai" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="inankai" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="inankai" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="inankai" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="redream" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="settings.editor.selected.configurable" value="android.sdk-updates" />
+    <property name="settings.editor.splitter.proportion" value="0.2" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="Application" factoryName="Application">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JUnit" factoryName="JUnit">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <envs />
+      <patterns />
+      <method />
+    </configuration>
+    <configuration default="true" type="Remote" factoryName="Remote">
+      <option name="USE_SOCKET_TRANSPORT" value="true" />
+      <option name="SERVER_MODE" value="false" />
+      <option name="SHMEM_ADDRESS" value="javadebug" />
+      <option name="HOST" value="localhost" />
+      <option name="PORT" value="5005" />
+      <method />
+    </configuration>
+    <configuration default="true" type="TestNG" factoryName="TestNG">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="SUITE_NAME" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="GROUP_NAME" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="OUTPUT_DIRECTORY" />
+      <option name="ANNOTATION_TYPE" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <option name="USE_DEFAULT_REPORTERS" value="false" />
+      <option name="PROPERTIES_FILE" />
+      <envs />
+      <properties />
+      <listeners />
+      <method />
+    </configuration>
+    <configuration name="&lt;template&gt;" type="Applet" default="true" selected="false">
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+    </configuration>
+    <configuration name="&lt;template&gt;" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" default="true" selected="false">
+      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
+    </configuration>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="9d90f5a4-1942-4c3c-9abd-77c21692f4a1" name="Default" comment="" />
+      <created>1477494826755</created>
+      <option name="number" value="Default" />
+      <updated>1477494826755</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1378" height="780" extended-state="1" />
+    <editor active="false" />
+    <layout>
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32850242" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24962063" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="光影电影下载不了，找到原因是因为获取的ip地址指向的位置没有资源，如果重复请求几十次，返回的ip地址就会改变，http://222.30.44.35:80/episode/%D0%D0%CA%AC%D7%DF%C8%E2%B5%DA%C6%DF%BC%BE/The.Walking.Dead.S07E01.720p.HDTV.x264-KILLERS.rmvb是正常生成的url，但没有资源，222.30.44.33有，试了好几个都对，暂时先硬编码替换。注意这里不稳妥！" />
+    <option name="LAST_COMMIT_MESSAGE" value="光影电影下载不了，找到原因是因为获取的ip地址指向的位置没有资源，如果重复请求几十次，返回的ip地址就会改变，http://222.30.44.35:80/episode/%D0%D0%CA%AC%D7%DF%C8%E2%B5%DA%C6%DF%BC%BE/The.Walking.Dead.S07E01.720p.HDTV.x264-KILLERS.rmvb是正常生成的url，但没有资源，222.30.44.33有，试了好几个都对，暂时先硬编码替换。注意这里不稳妥！" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager />
+    <watches-manager />
+  </component>
+</project>

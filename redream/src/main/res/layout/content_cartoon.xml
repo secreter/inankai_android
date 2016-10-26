@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="#eee"
     app:layout_behavior="@string/appbar_scrolling_view_behavior" tools:showIn="@layout/app_bar_cartoon"
-    tools:context="cn.redream.www.redream.CartoonActivity">
+    tools:context="cn.redream.www.ink_media.CartoonActivity">
 <TabHost
     android:layout_width="match_parent"
     android:layout_height="match_parent"

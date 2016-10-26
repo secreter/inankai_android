@@ -1,83 +1,78 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.1" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="cn.redream.www.redream">
+    package="cn.redream.www.ink_media">
 
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"></uses-permission>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
-        android:name=".RedreamApp"
+        android:name="cn.redream.www.ink_media.RedreamApp"
         android:allowBackup="true"
         android:icon="@mipmap/ink"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name="cn.redream.www.ink_media.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:launchMode="singleTop" >
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MusicTabActivity"
-            android:theme="@style/AppTheme.NoActionBar"
+        <activity
+            android:name="cn.redream.www.ink_media.MusicTabActivity"
             android:label="@string/title_activity_music"
-            android:launchMode="singleTop" >
-
-        </activity>
-        <activity android:name=".MusicResultActivity"
-            android:launchMode="singleTop" ></activity>
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name=".CctvActivity"
+            android:name="cn.redream.www.ink_media.MusicResultActivity"
+            android:launchMode="singleTop" />
+        <activity
+            android:name="cn.redream.www.ink_media.CctvActivity"
             android:label="@string/title_activity_cctv"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:launchMode="singleTop" ></activity>
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".TreeholeActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:launchMode="singleTop" ></activity>
+            android:name="cn.redream.www.ink_media.TreeholeActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".TestpaperActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:launchMode="singleTop" ></activity>
-        <activity android:name=".CartoonActivity"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:name="cn.redream.www.ink_media.TestpaperActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="cn.redream.www.ink_media.CartoonActivity"
             android:label="@string/title_activity_cartoon"
-            android:launchMode="singleTop">
-
-        </activity>
-        <activity android:name=".CartoonDescActivity">
-
-        </activity>
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name="cn.redream.www.ink_media.CartoonDescActivity"></activity>
         <activity
-            android:name=".TvplaerActivity"
+            android:name="cn.redream.www.ink_media.TvplaerActivity"
             android:configChanges="keyboardHidden|orientation"
+            android:launchMode="singleTop"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:launchMode="singleTop" ></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".MovieActivity"
+            android:name="cn.redream.www.ink_media.MovieActivity"
             android:label="@string/title_activity_movie"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:launchMode="singleTop" >
-
-        </activity>
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name=".MovieDescActivity"
-            android:label="@string/title_activity_movie"></activity>
-        <activity android:name=".LocalMovieActivity"></activity>
-        <activity android:name=".AboutActivity"></activity>
+            android:name="cn.redream.www.ink_media.MovieDescActivity"
+            android:label="@string/title_activity_movie" />
+        <activity android:name="cn.redream.www.ink_media.LocalMovieActivity" />
+        <activity android:name="cn.redream.www.ink_media.AboutActivity" />
         <activity
-            android:name=".GuideActivity"
+            android:name="cn.redream.www.ink_media.GuideActivity"
             android:label="@string/title_activity_guide"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
-
-        </activity>
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
+        <activity android:name="cn.redream.www.ink_media.Main2Activity"></activity>
     </application>
 
 </manifest>

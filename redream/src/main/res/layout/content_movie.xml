@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
 
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/app_bar_movie" tools:context="cn.redream.www.redream.MovieActivity">
+    tools:showIn="@layout/app_bar_movie" tools:context="cn.redream.www.ink_media.MovieActivity">
     <TabHost
         android:layout_width="match_parent"
         android:layout_height="match_parent"
