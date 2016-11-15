@@ -79,16 +79,16 @@ public class GetPostUtil {
             URLConnection conn=realUrl.openConnection();
             //设置url的通用属性
             conn.setRequestProperty("accept","*/*");
-            conn.setRequestProperty("connection","Keep-Alive");
-            conn.setRequestProperty("user-agent","Mozilla/4.0(compatible;MSIE 6.0;Windows NT 5.1;SV1)");
+            conn.setRequestProperty("connection", "Keep-Alive");
+            conn.setRequestProperty("user-agent", "Mozilla/4.0(compatible;MSIE 6.0;Windows NT 5.1;SV1)");
             //建立实际的连接
             conn.connect();
+
             //获取所有的响应字段
             Map<String,List<String>> map=conn.getHeaderFields();
             //遍历所有的响应头
             for (String key:map.keySet()) {
                 System.out.println(key+"---->"+map.get(key));
-
             }
             //定义Bufferedreader输入流来读取url的响应
             in=new BufferedReader(new InputStreamReader(conn.getInputStream(),"gb2312"));
@@ -116,6 +116,45 @@ public class GetPostUtil {
             }
         }
         return result;
+    }
+
+    public static String getHttpHeader(String url,String params,String key) throws IOException {
+        String  str;
+        BufferedReader in=null;
+        try{
+            String urlName=url+"?"+params;
+            URL realUrl=new URL(urlName);
+            //打开和url之间的连接
+            URLConnection conn=realUrl.openConnection();
+            //设置url的通用属性
+            conn.setRequestProperty("accept","*/*");
+            conn.setRequestProperty("connection","Keep-Alive");
+            conn.setRequestProperty("user-agent","Mozilla/4.0(compatible;MSIE 6.0;Windows NT 5.1;SV1)");
+            //建立实际的连接
+            conn.connect();
+            //获取所有的响应字段
+            str=conn.getHeaderField(key);
+
+        } catch (MalformedURLException e) {
+
+            System.out.println("GET请求出现异常"+e);
+            throw e;
+            //e.printStackTrace();
+        } catch (IOException e) {
+            throw e;
+//            e.printStackTrace();
+        }
+        //使用final来关闭输入流
+        finally{
+            try{
+                if (in!=null){
+                    in.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return str;
     }
     /*
     * 向指定url发送POST方式的请求

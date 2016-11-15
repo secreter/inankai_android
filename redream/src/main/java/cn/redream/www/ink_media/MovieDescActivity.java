@@ -157,6 +157,9 @@ public class MovieDescActivity extends AppCompatActivity {
                     LinearLayout loading= (LinearLayout) findViewById(R.id.loadingAnim);
                     loading.setVisibility(View.GONE);
                 }
+                if (msg.what==0x128){
+                    Toast.makeText(getApplicationContext(),"暂时没有可用下载地址，请稍后再试！",Toast.LENGTH_SHORT).show();
+                }
                 for (int i = 0; i < notification_id; i++) {
                     if (msg.what==i){
                         NotificationManager manager;
@@ -417,6 +420,7 @@ public class MovieDescActivity extends AppCompatActivity {
     }
     private String getRealDownloadUrl(String joyviowStr){
         String realUrl=null;
+        Boolean alive=false;  //是否找到可用url
         if (joyviowStr == null) return null;
         try {
             realUrl=new String(Base64.decode(joyviowStr,Base64.DEFAULT),"gbk");
@@ -432,30 +436,53 @@ public class MovieDescActivity extends AppCompatActivity {
             movieName=m.group(3);
             movieId=m.group(2);
         }
-        System.out.println(movieName);
-        try {
-            responseRealUrl = GetPostUtil.sendGetGbk(GET_IP_UR, "version=1.2.0.3&filmid=" + movieId + GET_IP_URL_AFTER);
-        } catch (MalformedURLException e) {
-            //网络错误
-            handler.sendEmptyMessage(MSG_NET_ERROR);
-            e.printStackTrace();
-            return null;
-        } catch (IOException e) {
-            handler.sendEmptyMessage(MSG_NET_ERROR);
-            e.printStackTrace();
-        }
-        Pattern p2 = Pattern.compile("\\*(.*?)\\|(.*?)\\|(.*?)");
-        final Matcher m2 = p2.matcher(responseRealUrl);
-        System.out.println(responseRealUrl);
-        m2.find();
-        m2.group(1);
-        try {
-            realUrl=m2.group(1)+"/"+ URLEncoder.encode(movieName,"GBK");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        System.out.println(realUrl);
+//        System.out.println(movieName);
+        //最多尝试20次，ip请求来的地址会不一样
+        out: for (int i=0;i<50;i++){
+            try {
+                responseRealUrl = GetPostUtil.sendGetGbk(GET_IP_UR, "version=1.2.0.3&filmid=" + movieId + GET_IP_URL_AFTER);
+            } catch (MalformedURLException e) {
+                //网络错误
+                handler.sendEmptyMessage(MSG_NET_ERROR);
+                e.printStackTrace();
+                return null;
+            } catch (IOException e) {
+                handler.sendEmptyMessage(MSG_NET_ERROR);
+                e.printStackTrace();
+            }
+            //*http://222.30.44.35:80/films/2016/operation%20mekong|0|99999999*http://10.3.85.67:8080/2016/operation%20mekong|0|366*http://10.127.240.132:8080/2016/operation%20mekong|0|455
 
+            Pattern p2 = Pattern.compile("\\*(.*?)\\|(.*?)\\|(\\d+?)");
+            final Matcher m2 = p2.matcher(responseRealUrl);
+            System.out.println(responseRealUrl);
+//        int matchCount=m2.groupCount();
+            String str;
+
+            while(m2.find()){
+                try {
+                    realUrl=m2.group(1)+"/"+ URLEncoder.encode(movieName,"GBK");
+                    //空格变成了+而不是%20
+                    realUrl=realUrl.replace("+","%20");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    str=GetPostUtil.getHttpHeader(realUrl, null,null);
+                    if (str.contains("200")){
+                        alive=true;
+                        break out;
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        if (!alive){
+            handler.sendEmptyMessage(0x128);
+
+        }
+
+        System.out.println(realUrl);
 
         return realUrl;
     }
@@ -505,7 +532,7 @@ public class MovieDescActivity extends AppCompatActivity {
                  */
             //http://222.30.44.35:80/episode/%D0%D0%CA%AC%D7%DF%C8%E2%B5%DA%C6%DF%BC%BE/The.Walking.Dead.S07E01.720p.HDTV.x264-KILLERS.rmvb
             //出了点问题，获取到的ip地址找不到资源，抓包发现，不断请求，最后222.30.44.33有资源。2016.10.15
-            urlStr=urlStr.replace("222.30.44.35","222.30.44.33");  //这一行硬编码真是恶心。。。想想怎么把它弄掉
+//            urlStr=urlStr.replace("222.30.44.35","222.30.44.33");  //这一行硬编码真是恶心。。。想想怎么把它弄掉
             URL url=new URL(urlStr);
             HttpURLConnection conn=(HttpURLConnection)url.openConnection();
             conn.connect();
